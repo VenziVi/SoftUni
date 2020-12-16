@@ -20,6 +20,7 @@ namespace Phonebook.Controllers
             if (ModelState.IsValid)
             {
                 DataContext.Contacts.Add(model);
+                TempData["Success"] = "Контакта е добавен успешно!";
             }
             else
             {

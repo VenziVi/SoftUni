@@ -8,9 +8,9 @@
 
 <div class="row">
     <div class="col-md-4">
-        
-        
-        <div class="text-danger">@(TempData["Error"] != null ? TempData["Error"] : string.Empty)</div>
+
+
+        <div class="text">@(TempData["Error"] != null ? TempData["Error"] : TempData["Success"])</div>
         @using (Html.BeginForm("Add", "AddPhone", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             <legend>New Contact</legend>

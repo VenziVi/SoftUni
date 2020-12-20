@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace SimpleCalculator
+namespace ShuntingYardAlgorithm
 {
     class Program
     {
-        
         static void Main(string[] args)
         {
             // 3 + 4  * 2 / ( 1 - 5 )
@@ -54,62 +53,15 @@ namespace SimpleCalculator
                 }
             }
 
-            while (operatorStack.Count > 0)
+            while (operatorStack.Count > 0 )
             {
                 output += operatorStack.Pop() + " ";
             }
 
-            string[] outputExpression = output.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                .Reverse().ToArray();
-            Stack<string> stack = new Stack<string>(outputExpression);
-            
-
-            while (stack.Count > 1)
-            {
-                List<string> elements = new List<string>();
-                var currentElement = stack.Pop();
-                while (!IsOperator(currentElement))
-                {
-                    elements.Add(currentElement);
-                    currentElement = stack.Pop();
-                }
-
-                int first = int.Parse(elements[elements.Count - 2]);
-                int second = int.Parse(elements[elements.Count - 1]);
-
-                int result = PerformOperation(currentElement, first, second);
-
-                stack.Push(result.ToString());
-
-                for (int i = elements.Count - 3; i >= 0; i--)
-                {
-                    stack.Push(elements[i]);
-                }
-            }
-
-            Console.WriteLine($"result = {stack.Peek()}");
+            Console.WriteLine(output);
         }
 
-        private static int PerformOperation(string currentElement, int first, int second)
-        {
-            switch (currentElement)
-            {
-                case "+":
-                    return first + second;
-                case "-":
-                    return first - second;
-                case "/":
-                    return first / second;
-                case "*":
-                    return first * second;
-                default:
-                    break;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        static int OperationPrecedence(string input)
+        static int OperationPrecedence(string input) 
         {
             switch (input)
             {
@@ -130,7 +82,7 @@ namespace SimpleCalculator
         }
 
 
-        static bool IsOperator(string input) 
+        static bool IsOperator(string input)
         {
             switch (input)
             {

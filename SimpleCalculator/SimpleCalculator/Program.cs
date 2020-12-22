@@ -6,7 +6,6 @@ namespace SimpleCalculator
 {
     class Program
     {
-        
         static void Main(string[] args)
         {
             // 3 + 4  * 2 / ( 1 - 5 )
@@ -59,10 +58,10 @@ namespace SimpleCalculator
                 output += operatorStack.Pop() + " ";
             }
 
-            string[] outputExpression = output.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            string[] RPNExpression = output.Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Reverse().ToArray();
-            Stack<string> stack = new Stack<string>(outputExpression);
-            
+            Stack<string> stack = new Stack<string>(RPNExpression);
+
 
             while (stack.Count > 1)
             {
@@ -74,10 +73,10 @@ namespace SimpleCalculator
                     currentElement = stack.Pop();
                 }
 
-                int first = int.Parse(elements[elements.Count - 2]);
-                int second = int.Parse(elements[elements.Count - 1]);
+                int firstNum = int.Parse(elements[elements.Count - 2]);
+                int secondNum = int.Parse(elements[elements.Count - 1]);
 
-                int result = PerformOperation(currentElement, first, second);
+                int result = PerformOperation(currentElement, firstNum, secondNum);
 
                 stack.Push(result.ToString());
 
@@ -90,18 +89,18 @@ namespace SimpleCalculator
             Console.WriteLine($"result = {stack.Peek()}");
         }
 
-        private static int PerformOperation(string currentElement, int first, int second)
+        private static int PerformOperation(string currentElement, int firstNum, int secondNum)
         {
             switch (currentElement)
             {
                 case "+":
-                    return first + second;
+                    return firstNum + secondNum;
                 case "-":
-                    return first - second;
+                    return firstNum - secondNum;
                 case "/":
-                    return first / second;
+                    return firstNum / secondNum;
                 case "*":
-                    return first * second;
+                    return firstNum * secondNum;
                 default:
                     break;
             }
@@ -130,7 +129,7 @@ namespace SimpleCalculator
         }
 
 
-        static bool IsOperator(string input) 
+        static bool IsOperator(string input)
         {
             switch (input)
             {

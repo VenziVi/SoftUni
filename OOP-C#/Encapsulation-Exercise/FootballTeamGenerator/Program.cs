@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Encapsulation_Exercise
+namespace FootballTeamGenerator
 {
-    class Program
+    public class StartUp
     {
         static void Main(string[] args)
         {

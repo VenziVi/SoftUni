@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SimpleSnake.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SimpleSnake.GameObjects
 {
@@ -15,6 +17,9 @@ namespace SimpleSnake.GameObjects
         private int nextLeftX;
         private int nextTopY;
         private int foodIndex;
+        private int colectedPoints;
+        private int level;
+        private int levelCounter;
 
         private bool isFoodSpawned;
 
@@ -26,9 +31,14 @@ namespace SimpleSnake.GameObjects
             this.foodIndex = RandomFoodNumber;
             this.GetFood();
             this.CreateSnake();
-
             this.isFoodSpawned = false;
+            this.colectedPoints = 0;
+            this.levelCounter = 0;
         }
+
+        public int Points => colectedPoints;
+
+        public int Level => level;
 
         private int RandomFoodNumber => new Random().Next(0, this.food.Length);
 
@@ -100,11 +110,20 @@ namespace SimpleSnake.GameObjects
         {
             int length = this.food[foodIndex].FoodPoints;
 
+            this.levelCounter++;
+
+            if (this.levelCounter % 5 == 0)
+            {
+                this.level++;
+            }
+
             for (int i = 0; i < length; i++)
             {
                 this.snakeElements.Enqueue(new Point(this.nextLeftX, this.nextTopY));
                 GetNextPoint(direction, currentSnakeHead);
             }
+
+            this.colectedPoints += length;
 
             this.foodIndex = this.RandomFoodNumber;
             this.food[foodIndex].SetRandomPosition(this.snakeElements);

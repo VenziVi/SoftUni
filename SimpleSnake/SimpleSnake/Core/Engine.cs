@@ -78,11 +78,14 @@ namespace SimpleSnake.Core
 
         public void AskForRestart()
         {
-            int leftX = this.wall.LeftX + 1;
-            int topY = 3;
+            int leftX = this.wall.LeftX + 3;
+            int topY = 10;
 
             Console.SetCursorPosition(leftX, topY);
             Console.Write("Would you like to continue? y/n");
+
+            Console.SetCursorPosition(leftX, topY + 2);
+            Console.Write("Your choise is: ");
 
             string input = Console.ReadLine();
 
@@ -95,6 +98,15 @@ namespace SimpleSnake.Core
             {
                 StopGame();
             }
+        }
+
+        private void PrintScoreData()
+        {
+            Console.SetCursorPosition(this.wall.LeftX + 3, 5);
+            Console.Write($"Your score is: {snake.Points}");
+
+            Console.SetCursorPosition(this.wall.LeftX + 3, 7);
+            Console.Write($"Your level is: {snake.Level}");
         }
 
         private void StopGame()
@@ -110,6 +122,8 @@ namespace SimpleSnake.Core
 
             while (true)
             {
+                PrintScoreData();
+
                 if (Console.KeyAvailable)
                 {
                     GetNextDirection();
@@ -122,7 +136,7 @@ namespace SimpleSnake.Core
                     AskForRestart();
                 }
 
-                sleepTime -= 0.1;
+                sleepTime -= 0.05;
 
                 Thread.Sleep((int)sleepTime);
             }

@@ -1,4 +1,4 @@
-<h1 align="center">Courses from the main program in SoftUni</h1>
+<h1 align="center">SoftUni Courses</h1>
 <br></br>
 
 ![alt text](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)
@@ -6,7 +6,7 @@
 <br></br>
 <br></br>
 <article> 
-<h2>Certificates</h2>
+<h2>SoftUni Certificates</h2>
 </article>
 
 <table class="tg">
@@ -19,7 +19,7 @@
 <tbody>
   <tr>
     <td class="tg-0pky">Programming Basics</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
+    <td class="tg-0pky"><a target="_blank" href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">Programming Fundamentals</td>

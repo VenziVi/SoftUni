@@ -19,19 +19,19 @@
 <tbody>
   <tr>
     <td class="tg-0pky">Programming Basics</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/85134/8657a393" target="_blank">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">Programming Fundamentals</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/96296/73faf4fd">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/96296/73faf4fd" target="_blank">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">C# Advanced</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/98089/ec575c54">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/98089/ec575c54" target="_blank">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">C# OOP</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/104223/80fa66e2" target="_blank">Link</a></td>
   </tr>
 </tbody>
 </table>

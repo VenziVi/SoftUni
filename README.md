@@ -1,7 +1,7 @@
 <h1 align="center">My SoftUni Courses</h1>
 <br></br>
 
-![alt text](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)
+![image](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)
   
 <br></br>
 <br></br>

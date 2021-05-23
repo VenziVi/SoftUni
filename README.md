@@ -24,15 +24,15 @@
   </tr>
   <tr>
     <td class="tg-0pky">Programming Fundamentals</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/certificates/converttoimage/96296?code=73faf4fd">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/96296/73faf4fd">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">C# Advanced</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/certificates/converttoimage/98089?code=ec575c54">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/98089/ec575c54">Link</a></td>
   </tr>
   <tr>
     <td class="tg-0pky">C# OOP</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/images/certificates/certificate-bg.png">Link</a></td>
+    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
   </tr>
 </tbody>
 </table>

@@ -1,4 +1,4 @@
-<h1 align="center">SoftUni Courses</h1>
+<h1 align="center">My SoftUni Courses</h1>
 <br></br>
 
 ![alt text](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)
@@ -6,7 +6,7 @@
 <br></br>
 <br></br>
 <article> 
-<h2>SoftUni Certificates</h2>
+<h2>My SoftUni Certificates</h2>
 </article>
 
 <table class="tg">
@@ -18,20 +18,20 @@
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0pky">Programming Basics</td>
-    <td class="tg-0pky"><a target="_blank" href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
+    <td>Programming Basics</td>
+    <td><a target="_blank" href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
   </tr>
   <tr>
-    <td class="tg-0pky">Programming Fundamentals</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/96296/73faf4fd">Link</a></td>
+    <td>Programming Fundamentals</td>
+    <td><a href="https://softuni.bg/certificates/details/96296/73faf4fd">Link</a></td>
   </tr>
   <tr>
-    <td class="tg-0pky">C# Advanced</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/98089/ec575c54">Link</a></td>
+    <td>C# Advanced</td>
+    <td><a href="https://softuni.bg/certificates/details/98089/ec575c54">Link</a></td>
   </tr>
   <tr>
-    <td class="tg-0pky">C# OOP</td>
-    <td class="tg-0pky"><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
+    <td>C# OOP</td>
+    <td><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
   </tr>
 </tbody>
 </table>

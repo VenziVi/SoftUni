@@ -1,9 +1,12 @@
-<h1 align="center" padding-bottom: 1.3em; >Courses from the main program in SoftUni</h1>
+<h1 align="center">Courses from the main program in SoftUni</h1>
+<br></br>
 
 ![alt text](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)
-
-<p></p>
-<article>
+  
+<br></br>
+<br></br>
+<br></br>
+<article> 
 <h2>Certificates</h2>
 </article>
 

@@ -5,7 +5,6 @@
   
 <br></br>
 <br></br>
-<br></br>
 <article> 
 <h2>Certificates</h2>
 </article>

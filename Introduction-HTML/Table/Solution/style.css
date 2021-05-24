@@ -1,7 +1,0 @@
-table, thead, tbody, tfoot, tr, td, th{
-    border: 1px solid black;
-}
-
-table tbody, tfoot tr {
-    text-align: right;
-}

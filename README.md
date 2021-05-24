@@ -1,4 +1,4 @@
-<h1 align="center">My SoftUni Courses</h1>
+<h1 align="center">My SoftUni exercises and projects </h1>
 <br></br>
 
 ![image](https://bulgaria.wordcamp.org/2020/files/2020/09/Softuni_logo_trasparent.png)

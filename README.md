@@ -12,8 +12,8 @@
 <table class="tg">
 <thead>
   <tr>
-    <th class="tg-0pky" align="center">Course</th>
-    <th class="tg-0pky">Link</th>
+    <th align="center">Course</th>
+    <th>Link</th>
   </tr>
 </thead>
 <tbody>

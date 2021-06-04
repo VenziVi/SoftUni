@@ -6,10 +6,10 @@
 <br></br>
 <br></br>
 <article> 
-<h2>My SoftUni Certificates</h2>
+<h2 align="center">My SoftUni Certificates</h2>
 </article>
 
-<table class="tg">
+<table class="tg" align="center">
 <thead>
   <tr>
     <th align="center">Course</th>

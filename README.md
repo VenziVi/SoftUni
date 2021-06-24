@@ -19,7 +19,7 @@
 <tbody>
   <tr>
     <td>Programming Basics</td>
-    <td><a target="_blank" href="https://softuni.bg/certificates/details/85134/8657a393">Link</a></td>
+    <td><a target="_blank" href="https://softuni.bg/certificates/details/107562/0873021c">Link</a></td>
   </tr>
   <tr>
     <td>Programming Fundamentals</td>

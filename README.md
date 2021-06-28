@@ -33,6 +33,10 @@
     <td>C# OOP</td>
     <td><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
   </tr>
+  <tr>
+    <td>JavaScript Advanced</td>
+    <td><a href="">Link</a></td>
+  </tr>
 </tbody>
 </table>
 

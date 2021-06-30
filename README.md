@@ -35,7 +35,7 @@
   </tr>
   <tr>
     <td>JavaScript Advanced</td>
-    <td><a href="">Link</a></td>
+    <td><a href="https://softuni.bg/certificates/details/108137/01ff68d4">Link</a></td>
   </tr>
 </tbody>
 </table>

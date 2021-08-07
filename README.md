@@ -37,6 +37,14 @@
     <td>JavaScript Advanced</td>
     <td><a href="https://softuni.bg/certificates/details/108137/01ff68d4">Link</a></td>
   </tr>
+  <tr>
+    <td>JavaScript Applications</td>
+    <td><a href="#">Link</a></td>
+  </tr>
+  <tr>
+    <td>C# Data Structures</td>
+    <td><a href="#">Link</a></td>
+  </tr>
 </tbody>
 </table>
 

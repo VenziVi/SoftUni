@@ -39,7 +39,7 @@
   </tr>
   <tr>
     <td>JavaScript Applications</td>
-    <td><a href="#">Link</a></td>
+    <td><a href="https://softuni.bg/certificates/details/110248/36d9fe72">Link</a></td>
   </tr>
   <tr>
     <td>C# Data Structures</td>

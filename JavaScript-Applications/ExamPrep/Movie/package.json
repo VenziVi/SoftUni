@@ -1,0 +1,17 @@
+{
+  "name": "02.movies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "http-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.12.3",
+    "lit-html": "^1.4.1",
+    "page": "^1.11.6"
+  }
+}

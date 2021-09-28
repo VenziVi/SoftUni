@@ -33,7 +33,6 @@
     <td>C# OOP</td>
     <td><a href="https://softuni.bg/certificates/details/104223/80fa66e2">Link</a></td>
   </tr>
-  <tr>
     <tr>
     <td>C# Data Structures Advanced</td>
     <td><a href="https://softuni.bg/certificates/details/113786/7aa2f246">Link</a></td>

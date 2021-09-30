@@ -1,2 +1,0 @@
-ALTER TABLE [Users]
-ADD CHECK (DATALENGTH([Password]) >= 5)

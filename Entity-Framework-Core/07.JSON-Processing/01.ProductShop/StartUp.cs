@@ -75,5 +75,27 @@ namespace ProductShop
 
             return $"Successfully imported {products.Count()}";
         }
+
+	//03.import categories
+
+	public static string ImportCategories(ProductShopContext context, string inputJson)
+        {
+            IEnumerable<CategoriesInputDto> categories = JsonConvert.DeserializeObject<IEnumerable<CategoriesInputDto>>(inputJson)
+                .Where(c => !string.IsNullOrEmpty(c.Name));
+
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ProductShopProfile>();
+            });
+
+            mapper = new Mapper(mapperConfig);
+
+            var meppedCategories = mapper.Map<IEnumerable<Category>>(categories);
+
+            context.Categories.AddRange(meppedCategories);
+            context.SaveChanges();
+
+            return $"Successfully imported {categories.Count()}";
+        }
     }
 }

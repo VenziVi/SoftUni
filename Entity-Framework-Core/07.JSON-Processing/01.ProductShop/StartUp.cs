@@ -31,8 +31,10 @@ namespace ProductShop
             //Console.WriteLine(ImportProducts(context, inputPeoducts)); 
             //Console.WriteLine(ImportCategories(context, inputCategories));
             //Console.WriteLine(ImportCategoryProducts(context, inputCategoriesProducts));
-            Console.WriteLine(GetUsersWithProducts(context));
+            //Console.WriteLine(GetUsersWithProducts(context));
         }
+	
+	//01.import users
 
         public static string ImportUsers(ProductShopContext context, string inputJson)
         {
@@ -51,6 +53,27 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {users.Count()}";
+        }
+
+	//02.import products
+	
+	public static string ImportProducts(ProductShopContext context, string inputJson)
+        {
+            IEnumerable<ProductInputDto> products = JsonConvert.DeserializeObject<IEnumerable<ProductInputDto>>(inputJson);
+
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ProductShopProfile>();
+            });
+
+            mapper = new Mapper(mapperConfig);
+
+            var mappedProducts = mapper.Map<IEnumerable<Product>>(products);
+
+            context.Products.AddRange(mappedProducts);
+            context.SaveChanges();
+
+            return $"Successfully imported {products.Count()}";
         }
     }
 }

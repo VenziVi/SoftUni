@@ -151,5 +151,44 @@ namespace ProductShop
 
             return result.ToString();
         }
+
+	//06.Export sold products
+
+	public static string GetSoldProducts(ProductShopContext context)
+        {
+            var users = context
+                .Users
+                .Where(u => u.ProductsSold.Any(y => y.Buyer != null))
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .Select(u => new
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    SoldProducts = u.ProductsSold.Select(s => new
+                    {
+                        Name = s.Name,
+                        Price = s.Price,
+                        BuyerFirstName = s.Buyer.FirstName,
+                        BuyerLastName = s.Buyer.LastName
+                    }).ToArray()
+                })
+                .ToArray();
+
+            DefaultContractResolver resolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var jsonSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = resolver
+            };
+
+            var result = JsonConvert.SerializeObject(users, jsonSettings);
+
+            return result;
+        }
     }
 }

@@ -119,5 +119,37 @@ namespace ProductShop
 
             return $"Successfully imported {categoriesProducts.Count()}";
         }
+
+	//05.Export products in range
+
+	public static string GetProductsInRange(ProductShopContext context)
+        {
+            var products = context
+                .Products
+                .Where(p => p.Price >= 500 && p.Price <= 1000)
+                .OrderBy(p => p.Price)
+                .Select(p => new
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    Seller = $"{p.Seller.FirstName} {p.Seller.LastName}"
+                })
+                .ToArray();
+
+            DefaultContractResolver contractResolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = contractResolver
+            };
+
+            var result = JsonConvert.SerializeObject(products, jsonSettings);
+
+            return result.ToString();
+        }
     }
 }

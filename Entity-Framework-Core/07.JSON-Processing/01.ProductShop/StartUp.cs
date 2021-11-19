@@ -190,5 +190,36 @@ namespace ProductShop
 
             return result;
         }
+
+	//07.Export categories by products count
+
+	public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            var categories = context
+                .Categories
+                .Select(c => new
+                {
+                    Category = c.Name,
+                    ProductsCount = c.CategoryProducts.Count(),
+                    AveragePrice = c.CategoryProducts.Average(x => x.Product.Price).ToString("f2"),
+                    TotalRevenue = c.CategoryProducts.Sum(x => x.Product.Price).ToString("f2")
+                })
+                .OrderByDescending(c => c.ProductsCount)
+                .ToArray();
+
+            DefaultContractResolver resover = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = resover
+            };
+
+            var result = JsonConvert.SerializeObject(categories, settings);
+            return result;
+        }
     }
 }

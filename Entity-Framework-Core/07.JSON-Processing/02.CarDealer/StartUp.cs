@@ -116,5 +116,17 @@ namespace CarDealer
 
             return $"Successfully imported {cars.Count}.";
         }
+
+	//04.Import customers
+
+	public static string ImportCustomers(CarDealerContext context, string inputJson)
+        {
+            var customers = JsonConvert.DeserializeObject < IEnumerable<Customer>>(inputJson);
+
+            context.Customers.AddRange(customers);
+            context.SaveChanges();
+
+            return $"Successfully imported {customers.Count()}.";
+        }
     }
 }

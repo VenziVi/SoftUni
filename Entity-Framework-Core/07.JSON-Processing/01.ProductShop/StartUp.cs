@@ -221,5 +221,58 @@ namespace ProductShop
             var result = JsonConvert.SerializeObject(categories, settings);
             return result;
         }
+
+	//08.Users and products
+
+	public static string GetUsersWithProducts(ProductShopContext context) 
+        {
+            var users = context
+                .Users
+                .Include(x => x.ProductsSold)
+                .ThenInclude(x => x.Buyer)
+                .Where(u => u.ProductsSold.Any(x => x.Buyer != null))
+                .ToArray();
+
+            var usersToSerialize = new
+            {
+                UsersCount = users.Count(),
+                Users = users
+                .Select(x => new
+                {
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Age = x.Age,
+                    SoldProducts = new
+                    {
+                        Count = x.ProductsSold.Count(p => p.Buyer != null),
+                        Products = x.ProductsSold
+                        .Where(p => p.Buyer != null)
+                        .Select(p => new
+                        {
+                            Name = p.Name,
+                            Price = p.Price
+                        })
+                        .ToArray()
+                    }
+                })
+                .OrderByDescending(x => x.SoldProducts.Count)
+                .ToArray()
+            };
+
+            var resolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = resolver,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var result = JsonConvert.SerializeObject(usersToSerialize, settings);
+            return result;
+        }
     }
 }

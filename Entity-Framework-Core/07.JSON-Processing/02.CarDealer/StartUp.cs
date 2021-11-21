@@ -82,5 +82,39 @@ namespace CarDealer
             return $"Successfully imported {parts.Count()}.";
         }
 
+	//03.Import Cars
+
+	 public static string ImportCars(CarDealerContext context, string inputJson)
+        {
+            var input = JsonConvert.DeserializeObject<List<CarsDto>>(inputJson);
+
+            List<Car> cars = new List<Car>();
+
+            foreach (var currentCar in input)
+            {
+                Car car = new Car()
+                {
+                    Make = currentCar.Make,
+                    Model = currentCar.Model,
+                    TravelledDistance = currentCar.TravelledDistance
+                };
+
+                foreach (var partId in currentCar.PartsId.Distinct())
+                {
+                    car.PartCars.Add(new PartCar()
+                    {
+                        Car = car,
+                        PartId = partId
+                    });
+                }
+                cars.Add(car);
+            }
+
+            context.Cars.AddRange(cars);
+            context.SaveChanges();
+
+
+            return $"Successfully imported {cars.Count}.";
+        }
     }
 }

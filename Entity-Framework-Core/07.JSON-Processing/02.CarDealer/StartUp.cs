@@ -140,5 +140,32 @@ namespace CarDealer
 
             return $"Successfully imported {sales.Count()}.";
         }
+
+	//06.Export oredred customers
+
+	public static string GetOrderedCustomers(CarDealerContext context)
+        {
+            var customers = context
+                .Customers
+                .OrderBy(c => c.BirthDate)
+                .ThenBy(c => c.IsYoungDriver)
+                .Select(c => new
+                {
+                    Name = c.Name,
+                    BirthDate = c.BirthDate.ToString("dd/MM/yyyy"),
+                    IsYoungDriver = c.IsYoungDriver
+                })
+                .ToArray();
+
+            var jsonSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+            };
+
+            var result = JsonConvert.SerializeObject(customers, jsonSettings);
+
+            return result;
+        }
+
     }
 }

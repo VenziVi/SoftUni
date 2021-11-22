@@ -167,5 +167,33 @@ namespace CarDealer
             return result;
         }
 
+	//07.Export cars toyota
+
+	public static string GetCarsFromMakeToyota(CarDealerContext context)
+        {
+            var cars = context
+                .Cars
+                .Where(c => c.Make == "Toyota")
+                .OrderBy(c => c.Model)
+                .ThenByDescending(c => c.TravelledDistance)
+                .Select(c => new ToyotaOutputDto
+                {
+                    Id = c.Id,
+                    Make = c.Make,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance
+                })
+                .ToArray();
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            };
+
+            var result = JsonConvert.SerializeObject(cars, settings);
+
+            return result;
+        }
+
     }
 }

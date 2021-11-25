@@ -220,5 +220,41 @@ namespace CarDealer
             return result;
         }
 
+	//09.Export cars with list of parts
+
+	public static string GetCarsWithTheirListOfParts(CarDealerContext context)
+        {
+            var cars = context
+               .Cars
+               .Select(c => new
+               {
+                   car = new CarOutputDto
+                   {
+                       Make = c.Make,
+                       Model = c.Model,
+                       TravelledDistance = c.TravelledDistance,
+                   },
+                   parts = c.PartCars.Select(p => new
+                   {
+                       Name = p.Part.Name,
+                       Price = p.Part.Price.ToString("f2")
+                   })
+               })
+               .ToArray();
+
+            
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var result = JsonConvert.SerializeObject(cars, settings);
+
+            return result;
+        }
+
+
     }
 }

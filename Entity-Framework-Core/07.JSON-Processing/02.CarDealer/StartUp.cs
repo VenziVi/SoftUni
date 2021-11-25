@@ -255,6 +255,37 @@ namespace CarDealer
             return result;
         }
 
+	//10.Export sales by customer
 
+	public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            var customers = context
+                .Customers
+                .Where(c => c.Sales.Count > 0)
+                .Select(c => new
+                {
+                    FullName = c.Name,
+                    BoughtCars = c.Sales.Count,
+                    SpentMoney = c.Sales.Sum(s => s.Car.PartCars.Sum(f => f.Part.Price))
+                })
+                .OrderByDescending(c => c.SpentMoney)
+                .ThenByDescending(c => c.BoughtCars)
+                .ToArray();
+
+            DefaultContractResolver resolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = resolver
+            };
+
+            var result = JsonConvert.SerializeObject(customers, settings);
+
+            return result;
+        }
     }
 }

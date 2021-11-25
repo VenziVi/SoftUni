@@ -195,5 +195,30 @@ namespace CarDealer
             return result;
         }
 
+	//08.Export local suppliers
+
+	public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            var suppliers = context
+                .Suppliers
+                .Where(s => s.IsImporter == false)
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count
+                })
+                .ToArray();
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            };
+
+            var result = JsonConvert.SerializeObject(suppliers, settings);
+
+            return result;
+        }
+
     }
 }

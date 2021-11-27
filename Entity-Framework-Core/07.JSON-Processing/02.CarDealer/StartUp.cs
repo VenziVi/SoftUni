@@ -287,5 +287,37 @@ namespace CarDealer
 
             return result;
         }
+
+	//11.Export sales with discount
+
+	public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            var sales = context
+                .Sales
+                .Select(s => new
+                {
+                    car = new CarOutputDto
+                    {
+                        Make = s.Car.Make,
+                        Model = s.Car.Model,
+                        TravelledDistance = s.Car.TravelledDistance
+                    },
+                    customerName = s.Customer.Name,
+                    Discount = s.Discount.ToString("f2"),
+                    price = s.Car.PartCars.Sum(p => p.Part.Price).ToString("f2"),
+                    priceWithDiscount = (s.Car.PartCars.Sum(p => p.Part.Price)  * ((100 - s.Discount) / 100 )).ToString("f2")
+                })
+                .Take(10)
+                .ToArray();
+
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            };
+
+            var result = JsonConvert.SerializeObject(sales, settings);
+
+            return result;
+        }
     }
 }

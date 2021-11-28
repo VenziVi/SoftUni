@@ -94,5 +94,37 @@ namespace ProductShop
 
             return $"Successfully imported {products.Count}";
         }
+
+	//03.Import categories
+
+	public static string ImportCategories(ProductShopContext context, string inputXml)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CategoriesImportDto[]), new XmlRootAttribute("Categories"));
+
+            using var sr = new StringReader(inputXml);
+
+            CategoriesImportDto[] dtos = (CategoriesImportDto[])xmlSerializer.Deserialize(sr);
+
+            ICollection<Category> categories = new HashSet<Category>();
+            foreach (var dto in dtos)
+            {
+                if (dto.Name == null)
+                {
+                    continue;
+                }
+
+                Category c = new Category
+                {
+                    Name = dto.Name
+                };
+
+                categories.Add(c);
+            }
+
+            context.Categories.AddRange(categories);
+            context.SaveChanges();
+
+            return $"Successfully imported {categories.Count}";
+        }	
     }
 }

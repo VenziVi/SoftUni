@@ -26,7 +26,9 @@ namespace ProductShop
 
             //System.Console.WriteLine(GetUsersWithProducts(context));
         }
-
+	
+	//01.Import users
+	
         public static string ImportUsers(ProductShopContext context, string inputXml)
         {
             XmlRootAttribute xmlRoot = new XmlRootAttribute("Users");
@@ -58,6 +60,39 @@ namespace ProductShop
             return $"Successfully imported {users.Count}";
         }
 
-       
+	//02.Import products
+	
+	public static string ImportProducts(ProductShopContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Products");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ProductImportDto[]), xmlRoot);
+
+            ProductImportDto[] dtos = null;
+
+            using (StringReader sr = new StringReader(inputXml))
+            {
+                dtos = (ProductImportDto[])xmlSerializer.Deserialize(sr);
+            }
+
+            ICollection<Product> products = new HashSet<Product>();
+
+            foreach (var dto in dtos)
+            {
+                Product p = new Product
+                {
+                    Name = dto.Name,
+                    Price = decimal.Parse(dto.Price),
+                    SellerId = dto.SellerId,
+                    BuyerId = dto.BuyerId
+                };
+
+                products.Add(p);
+            }
+
+            context.Products.AddRange(products);
+            context.SaveChanges();
+
+            return $"Successfully imported {products.Count}";
+        }
     }
 }

@@ -234,6 +234,35 @@ namespace ProductShop
             serializer.Serialize(writer, users, xmlns);
 
             return  sb.ToString().TrimEnd();
+        }
+
+	//06.Export categories by products count
+
+	public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CategoriesExportDto[]), new XmlRootAttribute("Categories"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(String.Empty, string.Empty);
+
+            CategoriesExportDto[] categories = context
+                .Categories
+                .Select(c => new CategoriesExportDto
+                {
+                    Name = c.Name,
+                    Count = c.CategoryProducts.Count,
+                    AveragePrice = c.CategoryProducts.Average(p => p.Product.Price),
+                    TotalRevenue = c.CategoryProducts.Sum(p => p.Product.Price)
+                })
+                .OrderByDescending(c => c.Count)
+                .ThenBy(c => c.TotalRevenue)
+                .ToArray();
+
+            serializer.Serialize(writer, categories, namespaces);
+
+            return sb.ToString().TrimEnd();
         }	
     }
 }

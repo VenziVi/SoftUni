@@ -167,6 +167,37 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {categoryProducts.Count}";
+        }
+
+	//04.Export products in range
+
+	public static string GetProductsInRange(ProductShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ProductsExportDto[]), new XmlRootAttribute("Products"));
+
+            ProductsExportDto[] productsDto = context
+                .Products
+                .Where(p => p.Price >= 500 && p.Price <= 1000 )
+                .OrderBy(p => p.Price)
+                .Select(p => new ProductsExportDto
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    Buyer = $"{p.Buyer.FirstName} {p.Buyer.LastName}"
+                })
+                .Take(10)
+                .ToArray();
+
+            xmlSerializer.Serialize(writer, productsDto, namespaces);
+
+            return sb.ToString().TrimEnd();
         }	
     }
 }

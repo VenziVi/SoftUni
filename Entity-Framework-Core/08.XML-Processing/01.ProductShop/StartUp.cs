@@ -125,6 +125,48 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {categories.Count}";
+        }
+
+	//04.Import categoryProducts
+
+	 public static string ImportCategoryProducts(ProductShopContext context, string inputXml)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Categories_ProductsImportDto[]), new XmlRootAttribute("CategoryProducts"));
+
+            using var reader = new StringReader(inputXml);
+
+            Categories_ProductsImportDto[] dtos = (Categories_ProductsImportDto[])xmlSerializer.Deserialize(reader);
+
+            ICollection<CategoryProduct> categoryProducts = new HashSet<CategoryProduct>();
+
+            foreach (var dto in dtos)
+            {
+                var category = context
+                    .Categories
+                    .FirstOrDefault(c => c.Id == dto.CategoryId);
+
+                var product = context
+                    .Products
+                    .FirstOrDefault(p => p.Id == dto.ProductId);
+
+                if (category == null || product == null)
+                {
+                    continue;
+                }
+
+                CategoryProduct cp = new CategoryProduct
+                {
+                    CategoryId = dto.CategoryId,
+                    ProductId = dto.ProductId
+                };
+
+                categoryProducts.Add(cp);
+            }
+
+            context.CategoryProducts.AddRange(categoryProducts);
+            context.SaveChanges();
+
+            return $"Successfully imported {categoryProducts.Count}";
         }	
     }
 }

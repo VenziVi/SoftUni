@@ -198,6 +198,42 @@ namespace ProductShop
             xmlSerializer.Serialize(writer, productsDto, namespaces);
 
             return sb.ToString().TrimEnd();
+        }
+
+	//05.Export sold products
+
+	public static string GetSoldProducts(ProductShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializerNamespaces xmlns = new XmlSerializerNamespaces();
+            xmlns.Add(string.Empty, string.Empty);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(UsersSoldProductDto[]), new XmlRootAttribute("Users"));
+
+            UsersSoldProductDto[] users = context
+                .Users
+                .Where(u => u.ProductsSold.Any())
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .Take(5)
+                .Select(u => new UsersSoldProductDto
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    SoldProducts = u.ProductsSold
+                    .Select(p => new SoldProductsDto
+                    {
+                        Name = p.Name,
+                        Price = p.Price
+                    }).ToArray()
+                })
+                .ToArray();
+
+            serializer.Serialize(writer, users, xmlns);
+
+            return  sb.ToString().TrimEnd();
         }	
     }
 }

@@ -25,6 +25,33 @@ namespace CarDealer
             //System.Console.WriteLine(GetSalesWithAppliedDiscount(context));
         }
 
-       
+       //01.import suppliers
+
+	public static string ImportSuppliers(CarDealerContext context, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SuppliersImport[]), new XmlRootAttribute("Suppliers"));
+
+            using StringReader reader = new StringReader(inputXml);
+
+            SuppliersImport[] dtos = (SuppliersImport[])serializer.Deserialize(reader);
+
+            var result = new HashSet<Supplier>();
+
+            foreach (var dto in dtos)
+            {
+                Supplier s = new Supplier
+                {
+                    Name = dto.Name,
+                    IsImporter = bool.Parse(dto.IsImporter)
+                };
+
+                result.Add(s);
+            }
+
+            context.Suppliers.AddRange(result);
+            context.SaveChanges();
+
+            return $"Successfully imported {result.Count}";
+        }
     }
 }

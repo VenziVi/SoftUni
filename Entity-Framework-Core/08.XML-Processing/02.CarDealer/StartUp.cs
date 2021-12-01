@@ -53,5 +53,41 @@ namespace CarDealer
 
             return $"Successfully imported {result.Count}";
         }
+
+	//02.Import parts
+
+	public static string ImportParts(CarDealerContext context, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(PartsImport[]), new XmlRootAttribute("Parts"));
+
+            using StringReader reader = new StringReader(inputXml);
+
+            PartsImport[] dtos = (PartsImport[])serializer.Deserialize(reader);
+
+            var parts = new HashSet<Part>();
+
+            foreach (var dto in dtos)
+            {
+                var supplier = context.Suppliers.FirstOrDefault(s => s.Id == dto.supplierId);
+
+                if (supplier == null)
+                    continue;
+
+                Part p = new Part
+                {
+                    Name = dto.Name,
+                    Price = dto.Price,
+                    Quantity = dto.Quantity,
+                    SupplierId = dto.supplierId
+                };
+
+                parts.Add(p);
+            }
+
+            context.Parts.AddRange(parts);
+            context.SaveChanges();
+
+            return $"Successfully imported {parts.Count}";
+        }
     }
 }

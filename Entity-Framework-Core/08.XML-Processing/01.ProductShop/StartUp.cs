@@ -263,6 +263,59 @@ namespace ProductShop
             serializer.Serialize(writer, categories, namespaces);
 
             return sb.ToString().TrimEnd();
+        }
+
+	//07. Export users with products
+
+	public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SellersExportDto), new XmlRootAttribute("Users"));
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            UsersWithProductsExportDto[] users = context
+                .Users
+                .Include(u => u.ProductsSold)
+                .ToArray()
+                .Where(u => u.ProductsSold.Any())
+                .OrderByDescending(u => u.ProductsSold.Count)
+                .Select(u => new UsersWithProductsExportDto
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Age = u.Age,
+                    SoldProducts = new SoldProductsExportDto()
+                    {
+                        Count = u.ProductsSold.Count,
+                        Products = u.ProductsSold.Select(x => new SellerProductsExportDto
+                        {
+                            Name = x.Name,
+                            Price = x.Price
+                        })
+                        .OrderByDescending(x => x.Price)
+                        .ToArray()
+                    }
+                }).ToArray();
+
+
+            var result = new SellersExportDto
+            {
+                Count = users.Length,
+                Users = users.Take(10).ToArray()
+            };
+
+            var settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.OmitXmlDeclaration = true;
+
+            using var stringWriter = new StringWriter();
+            using (var writer = XmlWriter.Create(stringWriter, settings))
+            {
+                serializer.Serialize(writer, result, namespaces);
+            }
+
+            return stringWriter.GetStringBuilder().ToString().TrimEnd();
         }	
     }
 }

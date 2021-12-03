@@ -168,5 +168,42 @@ namespace CarDealer
 
             return $"Successfully imported {customers.Count}";
         }
+
+	//05.Import sales
+
+	public static string ImportSales(CarDealerContext context, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SalesImport[]), new XmlRootAttribute("Sales"));
+
+            using StringReader reader = new StringReader(inputXml);
+
+            SalesImport[] dtos = (SalesImport[])serializer.Deserialize(reader);
+
+            var sales = new HashSet<Sale>();
+
+            foreach (var dto in dtos)
+            {
+                var currCar = context
+                    .Cars
+                    .FirstOrDefault(c => c.Id == dto.CarId);
+
+                if (currCar == null)
+                    continue;
+
+                Sale s = new Sale
+                {
+                    CarId = dto.CarId,
+                    CustomerId = dto.CustomerId,
+                    Discount = dto.Discount
+                };
+
+                sales.Add(s);
+            }
+
+            context.Sales.AddRange(sales);
+            context.SaveChanges();
+
+            return $"Successfully imported {sales.Count}";
+        }
     }
 }

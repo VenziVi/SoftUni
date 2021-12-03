@@ -205,5 +205,37 @@ namespace CarDealer
 
             return $"Successfully imported {sales.Count}";
         }
+
+	//06.Export cars with distance
+
+	public static string GetCarsWithDistance(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CarWithDistanceExport[]), new XmlRootAttribute("cars"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            CarWithDistanceExport[] cars = context
+                .Cars
+                .Where(c => c.TravelledDistance > 2000000)
+                .OrderBy(c => c.Make)
+                .ThenBy(c => c.Model)
+                .Take(10)
+                .Select(c => new CarWithDistanceExport
+                {
+                    Make = c.Make,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance
+                })
+                .ToArray();
+
+            serializer.Serialize(writer, cars, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
+
     }
 }

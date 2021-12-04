@@ -294,5 +294,42 @@ namespace CarDealer
 
             return sb.ToString().TrimEnd();
         }
+
+	//09.Export cars with list of parts
+
+	public static string GetCarsWithTheirListOfParts(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CarPartsExport[]), new XmlRootAttribute("cars"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            CarPartsExport[] carParts = context
+                .Cars
+                .Select(s => new CarPartsExport
+                {
+                    Make = s.Make,
+                    Model = s.Model,
+                    TravelledDistance = s.TravelledDistance,
+                    Parts = s.PartCars.Select(p => new PartsExport
+                    {
+                        Name = p.Part.Name,
+                        Price = p.Part.Price
+                    })
+                    .OrderByDescending(p => p.Price)
+                    .ToArray()
+                })
+                .OrderByDescending(c => c.TravelledDistance)
+                .ThenBy(c => c.Model)
+                .Take(5)
+                .ToArray();
+
+            serializer.Serialize(writer, carParts, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }

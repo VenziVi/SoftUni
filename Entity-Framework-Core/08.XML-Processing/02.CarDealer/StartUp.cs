@@ -331,5 +331,36 @@ namespace CarDealer
 
             return sb.ToString().TrimEnd();
         }
+
+	//10.Export total sales by customer
+
+	public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CustomersExport[]), new XmlRootAttribute("customers"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            CustomersExport[] customers = context
+                .Customers
+                .Where(c => c.Sales.Any())
+                .Select(c => new CustomersExport
+                {
+                    FullName = c.Name,
+                    BoughtCars = c.Sales.Count,
+                    SpendMoney = c.Sales
+                    .SelectMany(s => s.Car.PartCars)
+                    .Sum(p => p.Part.Price)
+                })
+                .OrderByDescending(c => c.SpendMoney)
+                .ToArray();
+
+            serializer.Serialize(writer, customers, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }

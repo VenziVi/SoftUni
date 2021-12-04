@@ -236,6 +236,35 @@ namespace CarDealer
 
             return sb.ToString().TrimEnd();
         }
+	
+	//07.Export cars with make BMW
 
+	public static string GetCarsFromMakeBmw(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(BMWExport[]), new XmlRootAttribute("cars"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            BMWExport[] bmws = context
+                .Cars
+                .Where(c => c.Make == "BMW")
+                .OrderBy(c => c.Model)
+                .ThenByDescending(c => c.TravelledDistance)
+                .Select(c => new BMWExport
+                {
+                    Id = c.Id,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance
+                }).ToArray();
+
+
+            serializer.Serialize(writer, bmws, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }

@@ -362,5 +362,42 @@ namespace CarDealer
 
             return sb.ToString().TrimEnd();
         }
+
+	//11.Export sales with applied discount
+
+	public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(SalesDicountExport[]), new XmlRootAttribute("sales"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            SalesDicountExport[] export = context
+                .Sales
+                .Select(e => new SalesDicountExport
+                {
+                    Car = new CarExport
+                    {
+                        Make = e.Car.Make,
+                        Model = e.Car.Model,
+                        TravelledDistance = e.Car.TravelledDistance
+                    },
+                    Discount = e.Discount,
+                    CustomerName = e.Customer.Name,
+                    Price = e.Car.PartCars
+                    .Sum(p => p.Part.Price),
+                    PriceWithDiscount = e.Car.PartCars.Sum(p => p.Part.Price)
+                        - (e.Car.PartCars.Sum(p => p.Part.Price) * e.Discount / 100)
+                })
+                .ToArray();
+                
+
+            serializer.Serialize(writer, export, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }

@@ -266,5 +266,33 @@ namespace CarDealer
 
             return sb.ToString().TrimEnd();
         }
+
+	\\08.Export local suppliers
+
+	public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(SupplierExport[]), new XmlRootAttribute("suppliers"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            using StringWriter writer = new StringWriter(sb);
+
+            SupplierExport[] suppliers = context
+                .Suppliers
+                .Where(s => s.IsImporter == false)
+                .Select(s => new SupplierExport
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count()
+                })
+                .ToArray();
+
+            serializer.Serialize(writer, suppliers, namespaces);
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }

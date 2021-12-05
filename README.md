@@ -49,6 +49,10 @@
     <td>MS SQL</td>
     <td><a href="https://softuni.bg/certificates/details/114091/10b7fbd6">Link</a></td>
   </tr>
+   <tr>
+    <td>Entity Framework Core</td>
+    <td><a href="">Link</a></td>
+  </tr>
 </tbody>
 </table>
 

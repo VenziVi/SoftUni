@@ -51,7 +51,7 @@
   </tr>
    <tr>
     <td>Entity Framework Core</td>
-    <td><a href="">Link</a></td>
+    <td><a href="https://softuni.bg/certificates/details/119013/6458c29d">Link</a></td>
   </tr>
 </tbody>
 </table>

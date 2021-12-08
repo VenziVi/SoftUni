@@ -139,7 +139,56 @@
 
         public static string ImportEmployees(TeisterMaskContext context, string jsonString)
         {
-           
+            var sb = new StringBuilder();
+
+            IEnumerable<ImportUsersDto> users = JsonConvert.DeserializeObject<ImportUsersDto[]>(jsonString);
+            var employees = new HashSet<Employee>();
+
+            foreach (var user in users)
+            {
+                if (!IsValid(user))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Employee e = new Employee
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    Phone = user.Phone
+                };
+
+                var employeeTasks = new HashSet<EmployeeTask>();
+
+                foreach (var currTask in user.Tasks.Distinct())
+                {
+                    var uniqueTask = context.Tasks.Find(currTask);
+
+                    if (uniqueTask == null)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    EmployeeTask et = new EmployeeTask
+                    {
+                        Employee = e,
+                        TaskId = uniqueTask.Id
+                    };
+
+                    employeeTasks.Add(et);
+                }
+
+                e.EmployeesTasks = employeeTasks;
+                employees.Add(e);
+                sb.AppendLine(string.Format(SuccessfullyImportedEmployee, e.Username, e.EmployeesTasks.Count));
+            }
+
+            context.Employees.AddRange(employees);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object dto)

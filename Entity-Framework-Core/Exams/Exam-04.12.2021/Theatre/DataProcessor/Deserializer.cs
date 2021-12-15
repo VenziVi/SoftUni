@@ -76,7 +76,42 @@
 
         public static string ImportCasts(TheatreContext context, string xmlString)
         {
-            
+            var sb = new StringBuilder();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CastsImportDto[]), new XmlRootAttribute("Casts"));
+
+            using StringReader reader = new StringReader(xmlString);
+
+            CastsImportDto[] dtos = (CastsImportDto[])serializer.Deserialize(reader);
+
+            var castsList = new HashSet<Cast>();
+
+            foreach (var dto in dtos)
+            {
+                if (!IsValid(dto) || (dto.IsMainCharacter != "true" && dto.IsMainCharacter != "false"))
+                {
+                    sb.AppendLine("Invalid data!");
+                    continue;
+                }
+
+                Cast cast = new Cast()
+                {
+                    FullName = dto.FullName,
+                    IsMainCharacter = bool.Parse(dto.IsMainCharacter),
+                    PhoneNumber = dto.PhoneNumber,
+                    PlayId = dto.PlayId
+                };
+
+                var mainCharacter = cast.IsMainCharacter == true ? "main" : "lesser";
+
+                castsList.Add(cast);
+                sb.AppendLine($"Successfully imported actor {dto.FullName} as a {mainCharacter} character!");
+            }
+
+            context.Casts.AddRange(castsList);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         public static string ImportTtheatersTickets(TheatreContext context, string jsonString)

@@ -53,7 +53,36 @@
 
         public static string ExportMostBusiestEmployees(TeisterMaskContext context, DateTime date)
         {
+		var employees = context
+                .Employees
+                .ToArray()
+                .Where(e => e.EmployeesTasks.Any(et => et.Task.OpenDate >= date))
+                .Select(e => new
+                {
+                    Username = e.Username,
+                    Tasks = e.EmployeesTasks
+                    .Select(ep => ep.Task)
+                    .Where(ep => ep.OpenDate >= date)
+                    .OrderByDescending(ep => ep.DueDate)
+                    .ThenBy(ep => ep.Name)
+                    .Select(ep => new
+                    {
+                        TaskName = ep.Name,
+                        OpenDate = ep.OpenDate.ToString("d", CultureInfo.InvariantCulture),
+                        DueDate = ep.DueDate.ToString("d", CultureInfo.InvariantCulture),
+                        LabelType = ep.LabelType.ToString(),
+                        ExecutionType = ep.ExecutionType.ToString()
+                    })
+                    .ToArray()
+                })
+                .OrderByDescending(e => e.Tasks.Count())
+                .ThenBy(e => e.Username)
+                .Take(10)
+                .ToArray();
 
+            var result = JsonConvert.SerializeObject(employees, Formatting.Indented);
+
+            return result;
         }
     }
 }

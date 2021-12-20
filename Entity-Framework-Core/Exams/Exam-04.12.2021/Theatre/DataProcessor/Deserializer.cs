@@ -116,7 +116,54 @@
 
         public static string ImportTtheatersTickets(TheatreContext context, string jsonString)
         {
-            
+            var sb = new StringBuilder();
+
+            IEnumerable<TheatresImportDto> theatres = JsonConvert.DeserializeObject<TheatresImportDto[]>(jsonString);
+
+            var theatresList = new HashSet<Theatre>();
+
+            foreach (var theatre in theatres)
+            {
+                if (!IsValid(theatre))
+                {
+                    sb.AppendLine("Invalid data!");
+                    continue;
+                }
+
+                Theatre currTheatre = new Theatre()
+                {
+                    Name = theatre.Name,
+                    NumberOfHalls = theatre.NumberOfHalls,
+                    Director = theatre.Director,
+                };
+
+                var ticketsList = new HashSet<Ticket>();
+
+                foreach (var ticket in theatre.Tickets)
+                {
+                    if (!IsValid(ticket))
+                    {
+                        sb.AppendLine("Invalid data!");
+                        continue;
+                    }
+
+                    Ticket currTicket = new Ticket()
+                    {
+                        Price = ticket.Price,
+                        RowNumber = ticket.RowNumber,
+                        PlayId = ticket.PlayId
+                    };
+
+                    ticketsList.Add(currTicket);
+                }
+
+                currTheatre.Tickets = ticketsList;
+                sb.AppendLine($"Successfully imported theatre {currTheatre.Name} with #{ticketsList.Count} tickets!");
+                context.Theatres.AddRange(currTheatre);
+                context.SaveChanges();
+            }
+
+            return sb.ToString().TrimEnd();
         }
 
 

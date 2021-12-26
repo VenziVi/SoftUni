@@ -44,7 +44,40 @@
 
         public static string ExportPlays(TheatreContext context, double rating)
         {
-            
+            var sb = new StringBuilder();
+
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(PlaysExportDto[]), new XmlRootAttribute("Plays"));
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            var plays = context
+                .Plays
+                .ToArray()
+                .Where(p => p.Rating <= rating)
+                .OrderBy(p => p.Title)
+                .Select(p => new PlaysExportDto
+                {
+                    Title = p.Title,
+                    Duration = p.Duration.ToString("c", CultureInfo.InvariantCulture),
+                    Rating = p.Rating == 0 ? "Premier" : p.Rating.ToString(),
+                    Genre = p.Genre.ToString(),
+                    Actors = p.Casts.Where(p => p.IsMainCharacter == true)
+                    .Select(a => new ActorsExportDto
+                    {
+                        FullName = a.FullName,
+                        MainCharacter = $"Plays main character in '{a.Play.Title}'."
+                    })
+                    .OrderByDescending(a => a.FullName)
+                    .ToArray()
+                })
+                .ToArray();
+
+            serializer.Serialize(writer, plays, namespaces);
+
+            return writer.ToString().TrimEnd();
         }
     }
 }

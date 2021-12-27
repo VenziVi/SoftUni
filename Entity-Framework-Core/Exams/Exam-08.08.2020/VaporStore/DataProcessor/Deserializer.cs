@@ -149,7 +149,56 @@
 
 		public static string ImportPurchases(VaporStoreDbContext context, string xmlString)
 		{
-			
+			var sb = new StringBuilder();
+
+			using StringReader reader = new StringReader(xmlString);
+
+			XmlSerializer serializer = new XmlSerializer(typeof(PurchiseImportDto[]), new XmlRootAttribute("Purchases"));
+
+			PurchiseImportDto[] dtos = (PurchiseImportDto[])serializer.Deserialize(reader);
+
+			var purchises = new HashSet<Purchase>();
+
+            foreach (var dto in dtos)
+            {
+                if (!IsValid(dto))
+                {
+					sb.AppendLine("Invalid Data");
+					continue;
+				}
+
+				bool isDateValid = DateTime.TryParseExact(dto.Date, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture,
+					DateTimeStyles.None, out DateTime currDate);
+
+				Card card = context.Cards.FirstOrDefault(c => c.Number == dto.Card);
+
+				User user = context.Users.FirstOrDefault(u => u.Cards.Any(c => c.Number == card.Number));
+
+				Game game = context.Games.FirstOrDefault(g => g.Name == dto.Title);
+
+				if (!isDateValid || card == null || game == null)
+				{
+					sb.AppendLine("Invalid Data");
+					continue;
+				}
+
+				Purchase p = new Purchase
+				{
+					Type = Enum.Parse<PurchaseType>(dto.Type),
+					ProductKey = dto.Key,
+					Game = game,
+					Date = currDate,
+					Card = card
+				};
+
+				purchises.Add(p);
+				sb.AppendLine($"Imported {dto.Title} for {user.Username}");
+            }
+
+			context.Purchases.AddRange(purchises);
+			context.SaveChanges();
+
+			return sb.ToString().TrimEnd();
 		}
 
 		private static bool IsValid(object dto)

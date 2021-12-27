@@ -18,7 +18,84 @@
 	{
 		public static string ImportGames(VaporStoreDbContext context, string jsonString)
 		{
-			
+			var sb = new StringBuilder();
+
+			var gamesDto = JsonConvert.DeserializeObject<GameImportDto[]>(jsonString);
+
+			var gameList = new HashSet<Game>();
+
+            foreach (var game in gamesDto)
+            {
+                if (!IsValid(game))
+                {
+					sb.AppendLine("Invalid Data");
+					continue;
+                }
+
+				bool isValidDate = DateTime.TryParseExact(game.ReleaseDate, "yyyy-MM-dd", 
+					CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate);
+
+                if (!isValidDate)
+                {
+					sb.AppendLine("Invalid Data");
+					continue;
+				}
+
+                if (game.Tags.Count() == 0)
+                {
+					sb.AppendLine("Invalid Data");
+					continue;
+				}
+
+				Developer gameDeveloper = context.Developers.FirstOrDefault(d => d.Name == game.Developer);
+
+                if (gameDeveloper == null)
+                {
+					gameDeveloper = new Developer
+					{
+						Name = game.Developer
+					};
+                }
+
+				Genre gameGenre = context.Genres.FirstOrDefault(g => g.Name == game.Genre);
+
+                if (gameGenre == null)
+                {
+					gameGenre = new Genre { Name = game.Genre };
+                }
+
+				Game g = new Game
+				{
+					Name = game.Name,
+					Price = game.Price,
+					ReleaseDate = parsedDate,
+					Developer = gameDeveloper,
+					Genre = gameGenre
+				};
+
+				foreach (var tag in game.Tags)
+				{
+					var currTag = context.Tags.FirstOrDefault(t => t.Name == tag);
+                    if (currTag == null)
+                    {
+						currTag = new Tag { Name = tag };
+                    }
+
+					var gameTag = g.GameTags.FirstOrDefault(gt => gt.Tag.Name == tag);
+                    if (gameTag == null)
+                    {
+						gameTag = new GameTag { Tag = currTag };
+                    }
+
+					g.GameTags.Add(gameTag);
+				}
+
+				context.Games.Add(g);
+				context.SaveChanges();
+				sb.AppendLine($"Added {g.Name} ({g.Genre.Name}) with {g.GameTags.Count} tags");
+			}
+
+			return sb.ToString().TrimEnd();
 		}
 
 		public static string ImportUsers(VaporStoreDbContext context, string jsonString)

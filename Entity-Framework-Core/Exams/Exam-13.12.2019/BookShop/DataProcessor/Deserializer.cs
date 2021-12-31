@@ -28,7 +28,42 @@
 
         public static string ImportBooks(BookShopContext context, string xmlString)
         {
-            
+            var sb = new StringBuilder();
+            using StringReader reader = new StringReader(xmlString);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(BooksImportDto[]), new XmlRootAttribute("Books"));
+            BooksImportDto[] books = (BooksImportDto[])serializer.Deserialize(reader);
+
+            var bookList = new List<Book>();
+
+            foreach (BooksImportDto book in books)
+            {
+                bool isDateValid = DateTime.TryParseExact(book.PublishedOn, "MM/dd/yyyy", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out DateTime publishedDate);
+
+                if (!IsValid(book) || !isDateValid)
+                {
+                    sb.AppendLine("Invalid data!");
+                    continue;
+                }
+
+                Book currBook = new Book()
+                {
+                    Name = book.Name,
+                    Genre = (Genre)book.Genre,
+                    Price = book.Price,
+                    Pages = book.Pages,
+                    PublishedOn = publishedDate,
+                };
+
+                bookList.Add(currBook);
+                sb.AppendLine($"Successfully imported book {book.Name} for {book.Price:f2}.");
+            }
+
+            context.Books.AddRange(bookList);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         public static string ImportAuthors(BookShopContext context, string jsonString)

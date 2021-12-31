@@ -16,7 +16,30 @@
     {
         public static string ExportMostCraziestAuthors(BookShopContext context)
         {
-            
+            var authors = context
+                .Authors
+                .Select(a => new
+                {
+                    AuthorName = $"{a.FirstName} {a.LastName}",
+                    Books = a.AuthorsBooks
+                   .Select(b => b.Book)
+                   .OrderByDescending(b => b.Price)
+                   .Select(b => new 
+                    {
+                        BookName = b.Name,
+                        BookPrice = b.Price.ToString("f2")
+
+                    })
+                    .ToArray()
+                })
+                .ToArray()
+                .OrderByDescending(a => a.Books.Count())
+                .ThenBy(a => a.AuthorName)
+                .ToArray();
+
+            var result = JsonConvert.SerializeObject(authors, Formatting.Indented);
+
+            return result;
            
         }
 

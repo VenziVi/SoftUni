@@ -68,7 +68,56 @@
 
         public static string ImportAuthors(BookShopContext context, string jsonString)
         {
-            
+            var sb = new StringBuilder();
+
+            AuthorsImportDto[] authors = JsonConvert.DeserializeObject<AuthorsImportDto[]>(jsonString);
+
+            foreach (var author in authors)
+            {
+                var email = context.Authors.FirstOrDefault(e => e.Email == author.Email);
+
+                if (!IsValid(author) || email != null || author.Books.All(b => b.Id == null))
+                {
+                    sb.AppendLine("Invalid data!");
+                    continue;
+                }
+
+                Author currAuthor = new Author()
+                {
+                    FirstName = author.FirstName,
+                    LastName = author.LastName,
+                    Email = author.Email,
+                    Phone = author.Phone,
+                };
+
+                foreach (var book in author.Books)
+                {
+                    var findedBook = context.Books.FirstOrDefault(b => b.Id == book.Id);
+
+                    if (findedBook == null)
+                        continue;
+
+                    AuthorBook bookId = new AuthorBook()
+                    {
+                        Book = findedBook
+                    };
+
+                    currAuthor.AuthorsBooks.Add(bookId);
+                }
+
+                if (currAuthor.AuthorsBooks.Count == 0)
+                {
+                    sb.AppendLine("Invalid data!");
+                    continue;
+                }
+
+                sb.AppendLine($"Successfully imported author - {author.FirstName} {author.LastName} with {currAuthor.AuthorsBooks.Count} books.");
+
+                context.Authors.Add(currAuthor);
+                context.SaveChanges();
+            }
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object dto)

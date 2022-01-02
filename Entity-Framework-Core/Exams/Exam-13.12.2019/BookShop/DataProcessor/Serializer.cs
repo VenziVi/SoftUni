@@ -45,7 +45,32 @@
 
         public static string ExportOldestBooks(BookShopContext context, DateTime date)
         {
-           
+           var sb = new StringBuilder();
+
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(OldestBooksExportDto[]), new XmlRootAttribute("Books"));
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(String.Empty, string.Empty);
+
+            OldestBooksExportDto[] books = context
+                .Books
+                .ToArray()
+                .Where(b => b.PublishedOn < date && b.Genre == Genre.Science)
+                .OrderByDescending(b => b.PublishedOn)
+                .Select(b => new OldestBooksExportDto
+                {
+                    Name = b.Name,
+                    Pages = b.Pages,
+                    Date = b.PublishedOn.ToString("d", CultureInfo.InvariantCulture)
+                })
+                .OrderByDescending(b => b.Pages)
+                .Take(10)
+                .ToArray();
+
+            serializer.Serialize(writer, books, namespaces);
+
+            return sb.ToString().TrimEnd();
         }
     }
 }

@@ -19,7 +19,46 @@
     {
         public static string ImportDepartmentsCells(SoftJailDbContext context, string jsonString)
         {
-            
+            var sb = new StringBuilder();
+
+            DepartmentsImportDto[] departments = JsonConvert.DeserializeObject<DepartmentsImportDto[]>(jsonString);
+
+            foreach (var department in departments)
+            {
+
+                if (!IsValid(department)
+                    || department.Cells.Count() == 0 
+                    || !department.Cells.All(IsValid))
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+
+                Department dep = new Department()
+                {
+                    Name = department.Name,
+                };
+
+                var cells = new HashSet<Cell>();
+
+                foreach (var cell in department.Cells)
+                {
+                    Cell currCell = new Cell()
+                    {
+                        CellNumber = cell.CellNumber,
+                        HasWindow = bool.Parse(cell.HasWindow)
+                    };
+
+                    cells.Add(currCell);
+                }
+
+                dep.Cells = cells;
+                sb.AppendLine($"Imported {dep.Name} with {dep.Cells.Count} cells");
+                context.Departments.Add(dep);
+                context.SaveChanges();
+            }
+
+            return sb.ToString().TrimEnd(); 
         }
 
         public static string ImportPrisonersMails(SoftJailDbContext context, string jsonString)

@@ -42,7 +42,46 @@
 
         public static string ExportPrisonersInbox(SoftJailDbContext context, string prisonersNames)
         {
-            
+            var sb = new StringBuilder();
+
+            using StringWriter writer = new StringWriter(sb);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(PrisonerInboxExportDto[]), new XmlRootAttribute("Prisoners"));
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(String.Empty, String.Empty);
+
+            string[] prisonersArr = prisonersNames.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            var prisoners = context
+                .Prisoners
+                .Where(p => prisonersArr.Contains(p.FullName))
+                .Select(p => new PrisonerInboxExportDto
+                {
+                    Id = p.Id,
+                    Name = p.FullName,
+                    IncarcerationDate = p.IncarcerationDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    EncryptedMessages = p.Mails.Select(m => new MessagesExportDto
+                    {
+                        Description = m.Description,
+                    })
+                    .ToArray()
+                })
+                .OrderBy(p => p.Name)
+                .ThenBy(p => p.Id)
+                .ToArray();
+
+            foreach (var prisoner in prisoners)
+            {
+                foreach (var pm in prisoner.EncryptedMessages)
+                {
+                    pm.Description = Reverse(pm.Description);
+                }
+            }
+
+            serializer.Serialize(writer, prisoners, namespaces);
+
+            return sb.ToString().TrimEnd();
         }
 
         public static string Reverse(string s)

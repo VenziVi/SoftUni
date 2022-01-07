@@ -131,7 +131,59 @@
 
         public static string ImportOfficersPrisoners(SoftJailDbContext context, string xmlString)
         {
-            
+            var sb = new StringBuilder();
+            using StringReader reader = new StringReader(xmlString);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(OfficerImportDto[]), new XmlRootAttribute("Officers"));
+
+            OfficerImportDto[] officers = (OfficerImportDto[])serializer.Deserialize(reader);
+
+            var officerList = new HashSet<Officer>();
+
+            foreach (var officer in officers)
+            {
+                string[] positions = new string[] { "Overseer", "Guard", "Watcher", "Labour"};
+                string[] weapons = new string[] { "Knife", "FlashPulse", "ChainRifle", "Pistol", "Sniper" };
+
+                if (!IsValid(officer) 
+                    || !positions.Contains(officer.Position) 
+                    || !weapons.Contains(officer.Weapon))
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+
+                Officer currOfficer = new Officer()
+                {
+                    FullName = officer.Name,
+                    Salary = officer.Money,
+                    Position = (Position)Enum.Parse(typeof(Position), officer.Position),
+                    Weapon = (Weapon)Enum.Parse(typeof(Weapon), officer.Weapon),
+                    DepartmentId = officer.DepartmentId,
+                };
+
+                var prisonersList = new HashSet<OfficerPrisoner>();
+
+                foreach (var prisoner in officer.Prisoners)
+                {
+                    OfficerPrisoner op = new OfficerPrisoner()
+                    {
+                        OfficerId = currOfficer.Id,
+                        PrisonerId = prisoner.id
+                    };
+
+                    prisonersList.Add(op);
+                }
+
+                currOfficer.OfficerPrisoners = prisonersList;
+                sb.AppendLine($"Imported {officer.Name} ({officer.Prisoners.Count()} prisoners)");
+                officerList.Add(currOfficer);
+            }
+
+            context.Officers.AddRange(officerList);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object obj)

@@ -5,7 +5,17 @@
       "ProjectGuid": "eb3fe512-ec31-4abe-8cc2-374527e27d55",
       "DisplayName": "BasicWebServer",
       "ColorIndex": 0
+    },
+    "76cde939-c3a0-4a18-bbe9-6971d973fd17": {
+      "ProjectGuid": "76cde939-c3a0-4a18-bbe9-6971d973fd17",
+      "DisplayName": "BasicWebServer.Server",
+      "ColorIndex": 1
+    },
+    "ab5f579d-ee54-45b1-849c-19fb87905d03": {
+      "ProjectGuid": "ab5f579d-ee54-45b1-849c-19fb87905d03",
+      "DisplayName": "BasicWebServer.Demo",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 3
 }

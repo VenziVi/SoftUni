@@ -2,7 +2,7 @@
 
 namespace BasicWebServer.Server.HTTP
 {
-    public class ContentResponse : ContentResponse
+    public class ContentResponse : Response
 
     {
         public ContentResponse(string _content, string _contentType) 

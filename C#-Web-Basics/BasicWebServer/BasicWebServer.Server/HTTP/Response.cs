@@ -1,8 +1,8 @@
 ﻿namespace BasicWebServer.Server.HTTP
 {
-    public class ContentResponse
+    public class Response
     {
-        public ContentResponse(StatusCode _statusCode)
+        public Response(StatusCode _statusCode)
         {
             StatusCode = _statusCode;
 

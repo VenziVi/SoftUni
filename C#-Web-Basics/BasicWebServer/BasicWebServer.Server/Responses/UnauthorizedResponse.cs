@@ -2,7 +2,7 @@
 
 namespace BasicWebServer.Server.Responses
 {
-    public class UnauthorizedResponse : Response
+    public class UnauthorizedResponse : ContentResponse
     {
         public UnauthorizedResponse() 
             : base(StatusCode.Unauthorized)

@@ -22,7 +22,7 @@ namespace BasicWebServer.Server.Routing
             {
                 Method.GET => this.MapGet(url, response),
                 Method.POST => this.MapPost(url, response),
-                _ => throw new InvalidOperationException($"{method} is not supported.");
+                _ => throw new InvalidOperationException($"{method} is not supported.")
         };
 
         public IRoutingTable MapGet(string url, Response response)
@@ -49,7 +49,7 @@ namespace BasicWebServer.Server.Routing
             var requestUrl = request.Url;
 
             if (!routes.ContainsKey(requestMethod) ||
-                routes[requestMethod].ContainsKey(requestUrl))
+                !routes[requestMethod].ContainsKey(requestUrl))
             {
                 return new NotFoundResponse();
             }

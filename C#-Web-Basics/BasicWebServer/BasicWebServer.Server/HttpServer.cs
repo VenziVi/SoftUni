@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using BasicWebServer.Server.HTTP;
+using BasicWebServer.Server.Routing;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -10,12 +12,29 @@ namespace BasicWebServer.Server
         private readonly int port;
         private readonly TcpListener serverListener;
 
-        public HttpServer(string _ipAddress, int _port)
+        private readonly RoutingTable routingTable;
+
+        public HttpServer(string _ipAddress, int _port,
+            Action<RoutingTable> _routingTableConfiguration)
         {
             ipAddress = IPAddress.Parse(_ipAddress);
             port = _port;
 
             serverListener = new TcpListener(ipAddress, port);
+
+            _routingTableConfiguration(routingTable = new RoutingTable());
+        }
+
+        public HttpServer(int _port, Action<IRoutingTable> _routingTable)
+            : this("127.0.0.1", _port, _routingTable)
+        {
+
+        }
+
+        public HttpServer(Action<IRoutingTable> _routingTable)
+            : this(8088, _routingTable)
+        {
+
         }
 
         public void Start()
@@ -35,23 +54,19 @@ namespace BasicWebServer.Server
 
                 Console.WriteLine(requestText);
 
-                WriteResponse(networkStream, "Server Works!");
+                var request = Request.Parse(requestText);
+
+                var response = routingTable.MatchRequest(request);
+
+                WriteResponse(networkStream, response);
                 
                 connection.Close();
             }
         }
 
-        private void WriteResponse(NetworkStream networkStream, string msg)
+        private void WriteResponse(NetworkStream networkStream, Response response)
         {
-            var contentLength = Encoding.UTF8.GetByteCount(msg);
-
-            var response = $@"HTTP/1.1 200 OK
-Content-Type: text/plain; charset=UTF-8
-Content-Length: {contentLength}
-
-{msg}";
-
-            var responseBytes = Encoding.UTF8.GetBytes(response);
+            var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
             networkStream.Write(responseBytes);
         }
 

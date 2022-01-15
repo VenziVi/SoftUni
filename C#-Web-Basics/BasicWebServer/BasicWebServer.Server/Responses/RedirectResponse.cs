@@ -2,7 +2,7 @@
 
 namespace BasicWebServer.Server.Responses
 {
-    public class RedirectResponse : ContentResponse
+    public class RedirectResponse : Response
     {
         public RedirectResponse(string _location) 
             : base(StatusCode.Found)

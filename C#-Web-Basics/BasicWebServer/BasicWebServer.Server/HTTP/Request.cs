@@ -37,7 +37,7 @@
                     break;
                 }
 
-                var headerParts = line.Split(":");
+                var headerParts = line.Split(":", 2);
 
                 if (headerParts.Length != 2)
                 {

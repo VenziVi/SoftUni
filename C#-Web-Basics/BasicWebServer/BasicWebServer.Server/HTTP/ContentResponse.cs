@@ -1,4 +1,5 @@
 ﻿using BasicWebServer.Server.Common;
+using System.Text;
 
 namespace BasicWebServer.Server.HTTP
 {
@@ -14,6 +15,17 @@ namespace BasicWebServer.Server.HTTP
             Headers.Add(Header.ContentType, _contentType);
 
             Body = _content;
+        }
+
+        public override string ToString()
+        {
+            if (Body != null)
+            {
+                var contentLength = Encoding.UTF8.GetByteCount(Body).ToString();
+                Headers.Add(Header.ContentLength, contentLength);
+            }
+
+            return base.ToString();
         }
     }
 }

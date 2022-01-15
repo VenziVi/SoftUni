@@ -13,7 +13,7 @@ namespace BasicWebServer.Server.Routing
         {
                 [Method.GET] = new (),
                 [Method.PUT] = new (),
-                [Method.PUT] = new (),
+                [Method.POST] = new (),
                 [Method.DELETE] = new ()
         };
 

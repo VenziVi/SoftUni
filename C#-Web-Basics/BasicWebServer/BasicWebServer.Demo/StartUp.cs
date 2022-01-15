@@ -16,7 +16,19 @@ public class StartUp
         new HttpServer(routes => routes
             .MapGet("/", new TextResponse("Hello from this server."))
             .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
-            .MapGet("/Redirect", new RedirectResponse("https://softuni.org/")))
+            .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
+            .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction)))
         .Start();
+    }
+
+    private static void AddFormDataAction(Request request, Response response)
+    {
+        response.Body = "";
+
+        foreach (var (key, value) in request.Form)
+        {
+            response.Body += $"{key} - {value}";
+            response.Body += Environment.NewLine;
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace BasicWebServer.Server
 
         public void Start()
         {
-            serverListener.Start();
+            this.serverListener.Start();
 
             Console.WriteLine($"Server started on port {port}.");
             Console.WriteLine($"Listening for request...");
@@ -86,7 +86,7 @@ namespace BasicWebServer.Server
 
             do
             {
-                var bytesRead = networkStream.Read(buffer, totalBytes, bufferLength);
+                var bytesRead = networkStream.Read(buffer, 0, bufferLength);
                 totalBytes += bytesRead;
 
                 if (totalBytes >= 10 * 1024)

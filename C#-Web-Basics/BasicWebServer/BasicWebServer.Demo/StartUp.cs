@@ -15,8 +15,8 @@ public class StartUp
     {
         new HttpServer(routes => routes
             .MapGet("/", new TextResponse("Hello from this server."))
-            .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
             .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
+            .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
             .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction)))
         .Start();
     }

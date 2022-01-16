@@ -86,7 +86,7 @@ namespace BasicWebServer.Server
 
             do
             {
-                var bytesRead = networkStream.Read(buffer, 0, bufferLength);
+                var bytesRead = networkStream.Read(buffer, totalBytes, bufferLength);
                 totalBytes += bytesRead;
 
                 if (totalBytes >= 10 * 1024)

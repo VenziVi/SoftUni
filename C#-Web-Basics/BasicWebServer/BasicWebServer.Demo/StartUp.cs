@@ -11,14 +11,17 @@ public class StartUp
 <input type='submit' value ='Save' />
 </form>";
 
-    private const string DownloadForm = @" < form action='/Content' method='POST'>
-   <input type = 'submit' value ='Download Sites Content' /> 
+    private const string DownloadForm = @"<form action='/Content' method='POST'>
+<input type = 'submit' value ='Download Sites Content'/> 
 </form>";
 
     private const string FileName = "content.txt";
 
     public static async Task Main()
     {
+        await DownloadSitesAsTextFile(StartUp.FileName,
+            new string[] { "https://judge.softuni.org/", "https://softuni.org/" });
+
         await new HttpServer(routes => routes
             .MapGet("/", new TextResponse("Hello from this server."))
             .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))

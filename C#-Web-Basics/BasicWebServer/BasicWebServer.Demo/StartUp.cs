@@ -11,9 +11,9 @@ public class StartUp
 <input type='submit' value ='Save' />
 </form>";
 
-    public static void Main()
+    public static async Task Main()
     {
-        new HttpServer(routes => routes
+        await new HttpServer(routes => routes
             .MapGet("/", new TextResponse("Hello from this server."))
             .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
             .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))

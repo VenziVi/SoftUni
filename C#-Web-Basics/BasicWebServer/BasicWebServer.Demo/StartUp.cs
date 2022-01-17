@@ -11,13 +11,21 @@ public class StartUp
 <input type='submit' value ='Save' />
 </form>";
 
+    private const string DownloadForm = @" < form action='/Content' method='POST'>
+   <input type = 'submit' value ='Download Sites Content' /> 
+</form>";
+
+    private const string FileName = "content.txt";
+
     public static async Task Main()
     {
         await new HttpServer(routes => routes
             .MapGet("/", new TextResponse("Hello from this server."))
             .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
             .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
-            .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction)))
+            .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction))
+            .MapGet("/Content", new HtmlResponse(StartUp.DownloadForm))
+            .MapPost("/Content", new TextFileResponse(StartUp.FileName)))
         .Start();
     }
 
@@ -30,5 +38,32 @@ public class StartUp
             response.Body += $"{key} - {value}";
             response.Body += Environment.NewLine;
         }
+    }
+
+    private static async Task<string> DownLoadWebSiteContent(string url)
+    {
+        var httpClient = new HttpClient();
+        using (httpClient)
+        {
+            var response = await httpClient.GetAsync(url);
+            var html = await response.Content.ReadAsStringAsync();
+            return html.Substring(0, 2000);
+        }
+    }
+
+    private static async Task DownloadSitesAsTextFile(string fileName, string[] urls)
+    {
+        var downloads = new List<Task<string>>();
+
+        foreach (var url in urls)
+        {
+            downloads.Add(DownLoadWebSiteContent(url));
+        }
+        
+        var response = await Task.WhenAll(downloads);
+        var responseString = string.Join(Environment.NewLine + new String('-', 100),
+            response);
+
+        await File.WriteAllTextAsync(fileName, responseString);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace BasicWebServer.Server.HTTP
 {
-    internal class TextFileResponse : Response
+    public class TextFileResponse : Response
     {
         public TextFileResponse(string _fileName) 
             : base(StatusCode.OK)

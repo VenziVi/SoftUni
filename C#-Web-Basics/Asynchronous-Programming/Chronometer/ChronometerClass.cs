@@ -2,12 +2,12 @@
 
 namespace Chronometer
 {
-    public class Chronometer : IChronometer
+    public class ChronometerClass : IChronometer
     {
         private Stopwatch stopWatch;
         private List<string> laps;
 
-        public Chronometer()
+        public ChronometerClass()
         {
             stopWatch = new Stopwatch();
             laps = new List<string>();

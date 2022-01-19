@@ -69,6 +69,8 @@ public class StartUp
             response.Cookies.Add("My-Cookie", "My-Value");
             response.Cookies.Add("My-Second-Cookie", "My-Second-Value");
         }
+
+        response.Body = bodyText;
     }
 
     private static void AddFormDataAction(Request request, Response response)

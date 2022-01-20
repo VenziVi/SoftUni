@@ -37,7 +37,7 @@ public class StartUp
 
     private static void AddCookiesAction(Request request, Response response)
     {
-        var requestHasCookies = request.Cookies.Any();
+        var requestHasCookies = request.Cookies.Any(c => c.Name != Session.SessionCookiesName); ;
         var bodyText = "";
 
         if (requestHasCookies)

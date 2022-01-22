@@ -43,8 +43,33 @@ public class StartUp
             .MapPost("/Content", new TextFileResponse(StartUp.FileName))
             .MapGet("/Cookies", new HtmlResponse("", StartUp.AddCookiesAction))
             .MapGet("/Session", new TextResponse("", StartUp.DisplaySessionInfoAction))
-            .MapGet("/Login", new HtmlResponse(StartUp.LoginForm)))
+            .MapGet("/Login", new HtmlResponse(StartUp.LoginForm))
+            .MapGet("/Login", new HtmlResponse("", StartUp.LoginAction)))
         .Start();
+    }
+
+    private static void LoginAction(Request request, Response response)
+    {
+        request.Session.Clear();
+
+        var bodyText = string.Empty;
+        var usernameMatch = request.Form["Username"] == StartUp.Username;
+        var passwordMAtch = request.Form["Password"] == StartUp.Password;
+
+        if (usernameMatch && passwordMAtch)
+        {
+            request.Session[Session.SessionUserKey] = "MyUserId";
+            request.Cookies.Add(Session.SessionCookiesName, request.Session.Id);
+
+            bodyText = "<h3>Logged successfully!</h3>";
+        }
+        else
+        {
+            bodyText = StartUp.LoginForm;
+        }
+
+        response.Body = String.Empty;
+        response.Body += bodyText;
     }
 
     private static void DisplaySessionInfoAction(Request request, Response response)

@@ -31,8 +31,28 @@ public class StartUp
             .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction))
             .MapGet("/Content", new HtmlResponse(StartUp.DownloadForm))
             .MapPost("/Content", new TextFileResponse(StartUp.FileName))
-            .MapGet("/Cookies", new HtmlResponse("", StartUp.AddCookiesAction)))
+            .MapGet("/Cookies", new HtmlResponse("", StartUp.AddCookiesAction))
+            .MapGet("/Session", new TextResponse("", StartUp.DisplaySessionInfoAction)))
         .Start();
+    }
+
+    private static void DisplaySessionInfoAction(Request request, Response response)
+    {
+        var sessionExists = request.Session.ContainsKey(Session.SessionCurrentDateKey);
+        var bodytext = string.Empty;
+
+        if (sessionExists)
+        {
+            var currDate = request.Session[Session.SessionCurrentDateKey];
+            bodytext = $"Stared date: {currDate}!";
+        }
+        else
+        {
+            bodytext = "Current date stored!";
+        }
+
+        response.Body = String.Empty;
+        response.Body += bodytext;
     }
 
     private static void AddCookiesAction(Request request, Response response)

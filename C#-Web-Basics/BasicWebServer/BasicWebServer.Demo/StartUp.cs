@@ -44,8 +44,17 @@ public class StartUp
             .MapGet("/Cookies", new HtmlResponse("", StartUp.AddCookiesAction))
             .MapGet("/Session", new TextResponse("", StartUp.DisplaySessionInfoAction))
             .MapGet("/Login", new HtmlResponse(StartUp.LoginForm))
-            .MapPost("/Login", new HtmlResponse("", StartUp.LoginAction)))
+            .MapPost("/Login", new HtmlResponse("", StartUp.LoginAction))
+            .MapGet("/Logout", new HtmlResponse("", StartUp.LogoutAction)))
         .Start();
+    }
+
+    private static void LogoutAction(Request request, Response response)
+    {
+        request.Session.Clear();
+
+        response.Body = String.Empty;
+        response.Body += "<h3>Logged out Successfully!</h3>";
     }
 
     private static void LoginAction(Request request, Response response)

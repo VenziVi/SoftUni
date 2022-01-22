@@ -45,8 +45,25 @@ public class StartUp
             .MapGet("/Session", new TextResponse("", StartUp.DisplaySessionInfoAction))
             .MapGet("/Login", new HtmlResponse(StartUp.LoginForm))
             .MapPost("/Login", new HtmlResponse("", StartUp.LoginAction))
-            .MapGet("/Logout", new HtmlResponse("", StartUp.LogoutAction)))
+            .MapGet("/Logout", new HtmlResponse("", StartUp.LogoutAction))
+            .MapGet("/UserProfile", new HtmlResponse("", StartUp.GetUSerDataAction)))
         .Start();
+    }
+
+    private static void GetUSerDataAction(Request request, Response response)
+    {
+        if (request.Session.ContainsKey(Session.SessionUserKey))
+        {
+            response.Body = String.Empty;
+            response.Body += $"<h3>Currently logged-in user " + 
+                $"is with username '{Username}'</h3>";
+        }
+        else
+        {
+            response.Body = String.Empty;
+            response.Body += $"<h3>You should first log in " +
+                $"- <a herf='/Login'>Login</a></h3>";
+        }
     }
 
     private static void LogoutAction(Request request, Response response)

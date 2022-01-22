@@ -44,7 +44,7 @@ public class StartUp
             .MapGet("/Cookies", new HtmlResponse("", StartUp.AddCookiesAction))
             .MapGet("/Session", new TextResponse("", StartUp.DisplaySessionInfoAction))
             .MapGet("/Login", new HtmlResponse(StartUp.LoginForm))
-            .MapGet("/Login", new HtmlResponse("", StartUp.LoginAction)))
+            .MapPost("/Login", new HtmlResponse("", StartUp.LoginAction)))
         .Start();
     }
 

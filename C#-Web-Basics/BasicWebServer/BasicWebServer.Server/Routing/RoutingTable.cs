@@ -11,10 +11,10 @@ namespace BasicWebServer.Server.Routing
         public RoutingTable() =>
             routes = new ()
         {
-                [Method.GET] = new (),
-                [Method.PUT] = new (),
-                [Method.POST] = new (),
-                [Method.DELETE] = new ()
+                [Method.GET] = new (StringComparer.InvariantCultureIgnoreCase),
+                [Method.PUT] = new (StringComparer.InvariantCultureIgnoreCase),
+                [Method.POST] = new (StringComparer.InvariantCultureIgnoreCase),
+                [Method.DELETE] = new (StringComparer.InvariantCultureIgnoreCase)
         };
 
         public IRoutingTable Map(string url, Method method, Response response)

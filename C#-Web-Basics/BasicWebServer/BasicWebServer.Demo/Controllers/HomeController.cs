@@ -1,5 +1,7 @@
 ﻿using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
+using System.Text;
+using System.Web;
 
 namespace BasicWebServer.Demo.Controllers
 {
@@ -61,6 +63,37 @@ namespace BasicWebServer.Demo.Controllers
                 .Wait();
 
             return File(FileName);
+        }
+
+        public Response Cookies()
+        {
+            if (Request.Cookies.Any(c => c.Name != 
+            BasicWebServer.Server.HTTP.Session.SessionCookiesName))
+            {
+                var cookieText = new StringBuilder();
+
+                cookieText.AppendLine("<h1>Cookies</h1>");
+
+                cookieText
+                    .Append("<table border='1'><tr><th>Name</th><th>Value</th</tr>");
+
+                foreach (var cookie in Request.Cookies)
+                {
+                    cookieText.Append("<tr>");
+                    cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Name)}</td>");
+                    cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Value)}</td>");
+                    cookieText.Append("</tr>");
+                }
+
+                cookieText.Append("</table>");
+                return Html(cookieText.ToString());
+            }
+
+            var cookies = new CookieCollection();
+            cookies.Add("My-Cookie", "My-Value");
+            cookies.Add("My-Second-Cookie", "My-Second-Value");
+
+            return Html("<h1>Cookies set!</h1>", cookies);
         }
 
 

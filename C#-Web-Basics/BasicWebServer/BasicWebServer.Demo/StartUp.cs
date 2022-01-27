@@ -31,8 +31,8 @@ public class StartUp
         await new HttpServer(routes => routes
             .MapGet<HomeController>("/", c => c.Index())
             .MapGet<HomeController>("/Redirect", c => c.Redirect())
-            .MapGet<HomeController>("/HTML", c => c.Html()))
-            //.MapPost<HomeController>("/HTML", c => c.HtmlFormPost())
+            .MapGet<HomeController>("/HTML", c => c.Html())
+            .MapPost<HomeController>("/HTML", c => c.HtmlFormPost()))
             //.MapGet<HomeController>("/Content", c => c.Content())
             //.MapPost<HomeController>("/Content", c => c.DownloadContent())
             //.MapGet<HomeController>("/Cookies", c => c.Cookies())
@@ -147,17 +147,6 @@ public class StartUp
         }
 
         response.Body = bodyText;
-    }
-
-    private static void AddFormDataAction(Request request, Response response)
-    {
-        response.Body = "";
-
-        foreach (var (key, value) in request.Form)
-        {
-            response.Body += $"{key} - {value}";
-            response.Body += Environment.NewLine;
-        }
     }
 
     private static async Task<string> DownLoadWebSiteContent(string url)

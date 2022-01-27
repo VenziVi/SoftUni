@@ -20,5 +20,17 @@ namespace BasicWebServer.Demo.Controllers
         public Response Index() => Text("Hello from this server!");
         public Response Redirect() => Redirect("https://softuni.org/");
         public Response Html() => Html(HtmlForm);
+        public Response HtmlFormPost()
+        {
+            string formData = string.Empty;
+
+            foreach (var (key, value) in Request.Form)
+            {
+                formData += $"{key} - {value}";
+                formData += Environment.NewLine;
+            }
+
+            return Text(formData);
+        }
     }
 }

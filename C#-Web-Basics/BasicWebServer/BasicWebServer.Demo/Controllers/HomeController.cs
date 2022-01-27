@@ -19,10 +19,6 @@ namespace BasicWebServer.Demo.Controllers
 <input type = 'submit' value ='Download Sites Content'/> 
 </form>";
 
-        private const string Username = "user";
-
-        private const string Password = "user123";
-
         public HomeController(Request request)
             : base(request)
         {

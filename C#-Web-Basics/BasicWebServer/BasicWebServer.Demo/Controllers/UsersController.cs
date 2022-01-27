@@ -11,11 +11,41 @@ namespace BasicWebServer.Demo.Controllers
    <input type='submit' value ='Log In' /> 
 </form>";
 
+        private const string Username = "user";
+
+        private const string Password = "user123";
+
         public UsersController(Request request) 
             : base(request)
         {
         }
 
         public Response Login() => Html(LoginForm);
+
+        public Response LoginUser()
+        {
+            Request.Session.Clear();
+
+            var usernameMatch = Request.Form["Username"] == Username;
+            var passwordMAtch = Request.Form["Password"] == Password;
+
+            if (usernameMatch && passwordMAtch)
+            {
+                if (!Request.Session.ContainsKey(Session.SessionUserKey))
+                {
+                    Request.Session[Session.SessionUserKey] = "MyUserId";
+
+                    var cookies = new CookieCollection();
+                    cookies.Add(Session.SessionCookiesName,
+                        Request.Session.Id);
+
+                    return Html("<h3>Logged successfully!</h3>", cookies);
+                }
+
+                return Html("<h3>Logged successfully!</h3>");
+            }
+
+            return Redirect("/Login");
+        }
     }
 }

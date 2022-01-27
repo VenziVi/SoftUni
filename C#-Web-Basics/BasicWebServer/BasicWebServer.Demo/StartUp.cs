@@ -16,8 +16,8 @@ public class StartUp
             .MapPost<HomeController>("/Content", c => c.DownloadContent())
             .MapGet<HomeController>("/Cookies", c => c.Cookies())
             .MapGet<HomeController>("/Session", c => c.Session())
-            .MapGet<UsersController>("/Login", c => c.Login()))
-            //.MapPost<HomeController>("/Login", new HtmlResponse("", StartUp.LoginAction))
+            .MapGet<UsersController>("/Login", c => c.Login())
+            .MapPost<UsersController>("/Login", c => c.LoginUser()))
             //.MapGet<HomeController>("/Logout", new HtmlResponse("", StartUp.LogoutAction))
             //.MapGet<HomeController>("/UserProfile", new HtmlResponse("", StartUp.GetUSerDataAction)))
         .Start();
@@ -46,28 +46,4 @@ public class StartUp
         response.Body = String.Empty;
         response.Body += "<h3>Logged out Successfully!</h3>";
     }
-
-    //private static void LoginAction(Request request, Response response)
-    //{
-    //    request.Session.Clear();
-
-    //    var bodyText = string.Empty;
-    //    var usernameMatch = request.Form["Username"] == StartUp.Username;
-    //    var passwordMAtch = request.Form["Password"] == StartUp.Password;
-
-    //    if (usernameMatch && passwordMAtch)
-    //    {
-    //        request.Session[Session.SessionUserKey] = "MyUserId";
-    //        request.Cookies.Add(Session.SessionCookiesName, request.Session.Id);
-
-    //        bodyText = "<h3>Logged successfully!</h3>";
-    //    }
-    //    else
-    //    {
-    //        bodyText = StartUp.LoginForm;
-    //    }
-
-    //    response.Body = String.Empty;
-    //    response.Body += bodyText;
-    //}
 }

@@ -20,6 +20,5 @@ public class StartUp
             .MapGet<UsersController>("/Logout", c => c.Logout())
             .MapGet<UsersController>("/UserProfile", c => c.GetUserData()))
         .Start();
-
     }
 }

@@ -1,8 +1,7 @@
 ﻿using BasicWebServer.Demo.Controllers;
 using BasicWebServer.Server;
-
+using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
-using BasicWebServer.Server.Responses;
 using System.Text;
 using System.Web;
 
@@ -31,22 +30,26 @@ public class StartUp
     private const string FileName = "content.txt";
 
     public static async Task Main()
-        => await new HttpServer(routes => routes
+    {
+        //await DownloadSitesAsTextFile(StartUp.FileName,
+        //    new string[] { "https://judge.softuni.org/", "https://softuni.org/" });
+
+        await new HttpServer(routes => routes
             .MapGet<HomeController>("/", c => c.Index())
-            .MapGet<HomeController>("/Redirect", c => c.Redirect())
-            .MapGet<HomeController>("/HTML", c => c.Html())
-            .MapPost<HomeController>("/HTML", c => c.HtmlFormPost())
-            .MapGet<HomeController>("/Content", c => c.Content())
-            .MapPost<HomeController>("/Content", c => c.DownloadContent())
-            .MapGet<HomeController>("/Cookies", c => c.Cookies())
-            .MapGet<HomeController>("/Session", c => c.Session())
+            .MapGet<HomeController>("/Redirect", c => c.Redirect()))
+            //.MapGet<HomeController>("/HTML", c => c.Html())
+            //.MapPost<HomeController>("/HTML", c => c.HtmlFormPost())
+            //.MapGet<HomeController>("/Content", c => c.Content())
+            //.MapPost<HomeController>("/Content", c => c.DownloadContent())
+            //.MapGet<HomeController>("/Cookies", c => c.Cookies())
+            //.MapGet<HomeController>("/Session", c => c.Session())
             //.MapGet<HomeController>("/Login", new HtmlResponse(StartUp.LoginForm))
             //.MapPost<HomeController>("/Login", new HtmlResponse("", StartUp.LoginAction))
             //.MapGet<HomeController>("/Logout", new HtmlResponse("", StartUp.LogoutAction))
             //.MapGet<HomeController>("/UserProfile", new HtmlResponse("", StartUp.GetUSerDataAction)))
         .Start();
-    
 
+    }
     private static void GetUSerDataAction(Request request, Response response)
     {
         if (request.Session.ContainsKey(Session.SessionUserKey))

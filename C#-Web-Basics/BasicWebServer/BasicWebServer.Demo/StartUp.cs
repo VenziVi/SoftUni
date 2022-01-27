@@ -6,35 +6,16 @@ using System.Text;
 using System.Web;
 
 public class StartUp
-{
-    private const string DownloadForm = @"<form action='/Content' method='POST'>
-<input type = 'submit' value ='Download Sites Content'/> 
-</form>";
-
-    private const string LoginForm = @"<form action='/Login' method='POST'>
-   Username: <input type='text' name='Username'/>
-   Password: <input type='text' name='Password'/>
-   <input type='submit' value ='Log In' /> 
-</form>";
-
-    private const string Username = "user";
-
-    private const string Password = "user123";
-
-    private const string FileName = "content.txt";
-
+{   
     public static async Task Main()
     {
-        //await DownloadSitesAsTextFile(StartUp.FileName,
-        //    new string[] { "https://judge.softuni.org/", "https://softuni.org/" });
-
         await new HttpServer(routes => routes
             .MapGet<HomeController>("/", c => c.Index())
             .MapGet<HomeController>("/Redirect", c => c.Redirect())
             .MapGet<HomeController>("/HTML", c => c.Html())
-            .MapPost<HomeController>("/HTML", c => c.HtmlFormPost()))
-            //.MapGet<HomeController>("/Content", c => c.Content())
-            //.MapPost<HomeController>("/Content", c => c.DownloadContent())
+            .MapPost<HomeController>("/HTML", c => c.HtmlFormPost())
+            .MapGet<HomeController>("/Content", c => c.Content())
+            .MapPost<HomeController>("/Content", c => c.DownloadContent()))
             //.MapGet<HomeController>("/Cookies", c => c.Cookies())
             //.MapGet<HomeController>("/Session", c => c.Session())
             //.MapGet<HomeController>("/Login", new HtmlResponse(StartUp.LoginForm))
@@ -44,21 +25,21 @@ public class StartUp
         .Start();
 
     }
-    private static void GetUSerDataAction(Request request, Response response)
-    {
-        if (request.Session.ContainsKey(Session.SessionUserKey))
-        {
-            response.Body = String.Empty;
-            response.Body += $"<h3>Currently logged-in user " + 
-                $"is with username '{Username}'</h3>";
-        }
-        else
-        {
-            response.Body = String.Empty;
-            response.Body += $"<h3>You should first log in " +
-                $"- <a herf='/Login'>Login</a></h3>";
-        }
-    }
+    //private static void GetUSerDataAction(Request request, Response response)
+    //{
+    //    if (request.Session.ContainsKey(Session.SessionUserKey))
+    //    {
+    //        response.Body = String.Empty;
+    //        response.Body += $"<h3>Currently logged-in user " + 
+    //            $"is with username '{Username}'</h3>";
+    //    }
+    //    else
+    //    {
+    //        response.Body = String.Empty;
+    //        response.Body += $"<h3>You should first log in " +
+    //            $"- <a herf='/Login'>Login</a></h3>";
+    //    }
+    //}
 
     private static void LogoutAction(Request request, Response response)
     {
@@ -68,29 +49,29 @@ public class StartUp
         response.Body += "<h3>Logged out Successfully!</h3>";
     }
 
-    private static void LoginAction(Request request, Response response)
-    {
-        request.Session.Clear();
+    //private static void LoginAction(Request request, Response response)
+    //{
+    //    request.Session.Clear();
 
-        var bodyText = string.Empty;
-        var usernameMatch = request.Form["Username"] == StartUp.Username;
-        var passwordMAtch = request.Form["Password"] == StartUp.Password;
+    //    var bodyText = string.Empty;
+    //    var usernameMatch = request.Form["Username"] == StartUp.Username;
+    //    var passwordMAtch = request.Form["Password"] == StartUp.Password;
 
-        if (usernameMatch && passwordMAtch)
-        {
-            request.Session[Session.SessionUserKey] = "MyUserId";
-            request.Cookies.Add(Session.SessionCookiesName, request.Session.Id);
+    //    if (usernameMatch && passwordMAtch)
+    //    {
+    //        request.Session[Session.SessionUserKey] = "MyUserId";
+    //        request.Cookies.Add(Session.SessionCookiesName, request.Session.Id);
 
-            bodyText = "<h3>Logged successfully!</h3>";
-        }
-        else
-        {
-            bodyText = StartUp.LoginForm;
-        }
+    //        bodyText = "<h3>Logged successfully!</h3>";
+    //    }
+    //    else
+    //    {
+    //        bodyText = StartUp.LoginForm;
+    //    }
 
-        response.Body = String.Empty;
-        response.Body += bodyText;
-    }
+    //    response.Body = String.Empty;
+    //    response.Body += bodyText;
+    //}
 
     private static void DisplaySessionInfoAction(Request request, Response response)
     {
@@ -147,32 +128,5 @@ public class StartUp
         }
 
         response.Body = bodyText;
-    }
-
-    private static async Task<string> DownLoadWebSiteContent(string url)
-    {
-        var httpClient = new HttpClient();
-        using (httpClient)
-        {
-            var response = await httpClient.GetAsync(url);
-            var html = await response.Content.ReadAsStringAsync();
-            return html.Substring(0, 2000);
-        }
-    }
-
-    private static async Task DownloadSitesAsTextFile(string fileName, string[] urls)
-    {
-        var downloads = new List<Task<string>>();
-
-        foreach (var url in urls)
-        {
-            downloads.Add(DownLoadWebSiteContent(url));
-        }
-        
-        var response = await Task.WhenAll(downloads);
-        var responseString = string.Join(Environment.NewLine + new String('-', 100),
-            response);
-
-        await File.WriteAllTextAsync(fileName, responseString);
     }
 }

@@ -96,6 +96,20 @@ namespace BasicWebServer.Demo.Controllers
             return Html("<h1>Cookies set!</h1>", cookies);
         }
 
+        public Response Session()
+        {
+            var currDateKey = "CurrentDate";
+            var sessionExists = Request.Session.ContainsKey(currDateKey);
+
+            if (sessionExists)
+            {
+                var currDate = Request.Session[currDateKey];
+                return Text($"Stored date: {currDate}!");
+            }
+
+            return Text("Current date stored!");
+        }
+
 
         private static async Task<string> DownLoadWebSiteContent(string url)
         {

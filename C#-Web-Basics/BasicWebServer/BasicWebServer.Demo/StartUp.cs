@@ -2,8 +2,6 @@
 using BasicWebServer.Server;
 using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
-using System.Text;
-using System.Web;
 
 public class StartUp
 {   
@@ -16,8 +14,8 @@ public class StartUp
             .MapPost<HomeController>("/HTML", c => c.HtmlFormPost())
             .MapGet<HomeController>("/Content", c => c.Content())
             .MapPost<HomeController>("/Content", c => c.DownloadContent())
-            .MapGet<HomeController>("/Cookies", c => c.Cookies()))
-            //.MapGet<HomeController>("/Session", c => c.Session())
+            .MapGet<HomeController>("/Cookies", c => c.Cookies())
+            .MapGet<HomeController>("/Session", c => c.Session()))
             //.MapGet<HomeController>("/Login", new HtmlResponse(StartUp.LoginForm))
             //.MapPost<HomeController>("/Login", new HtmlResponse("", StartUp.LoginAction))
             //.MapGet<HomeController>("/Logout", new HtmlResponse("", StartUp.LogoutAction))
@@ -72,61 +70,4 @@ public class StartUp
     //    response.Body = String.Empty;
     //    response.Body += bodyText;
     //}
-
-    private static void DisplaySessionInfoAction(Request request, Response response)
-    {
-        var sessionExists = request.Session.ContainsKey(Session.SessionCurrentDateKey);
-        var bodytext = string.Empty;
-
-        if (sessionExists)
-        {
-            var currDate = request.Session[Session.SessionCurrentDateKey];
-            bodytext = $"Stared date: {currDate}!";
-        }
-        else
-        {
-            bodytext = "Current date stored!";
-        }
-
-        response.Body = String.Empty;
-        response.Body += bodytext;
-    }
-
-    private static void AddCookiesAction(Request request, Response response)
-    {
-        var requestHasCookies = request.Cookies.Any(c => c.Name != Session.SessionCookiesName); ;
-        var bodyText = "";
-
-        if (requestHasCookies)
-        {
-            var cookieText = new StringBuilder();
-            cookieText.AppendLine("<h1>Cookies</h1>");
-
-            cookieText
-                .Append("<table border='1'><tr><th>Name</th><th>Value</th</tr>");
-
-            foreach (var cookie in request.Cookies)
-            {
-                cookieText.Append("<tr>");
-                cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Name)}</td>");
-                cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Value)}</td>");
-                cookieText.Append("</tr>");
-            }
-
-            cookieText.Append("</table>");
-            bodyText = cookieText.ToString();
-        }
-        else
-        {
-            bodyText = "<h1>Cookies set!</h1>";
-        }
-
-        if (!requestHasCookies)
-        {
-            response.Cookies.Add("My-Cookie", "My-Value");
-            response.Cookies.Add("My-Second-Cookie", "My-Second-Value");
-        }
-
-        response.Body = bodyText;
-    }
 }

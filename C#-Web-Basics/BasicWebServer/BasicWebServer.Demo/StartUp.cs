@@ -17,8 +17,8 @@ public class StartUp
             .MapGet<HomeController>("/Cookies", c => c.Cookies())
             .MapGet<HomeController>("/Session", c => c.Session())
             .MapGet<UsersController>("/Login", c => c.Login())
-            .MapPost<UsersController>("/Login", c => c.LoginUser()))
-            //.MapGet<HomeController>("/Logout", new HtmlResponse("", StartUp.LogoutAction))
+            .MapPost<UsersController>("/Login", c => c.LoginUser())
+            .MapGet<UsersController>("/Logout", c => c.Logout()))
             //.MapGet<HomeController>("/UserProfile", new HtmlResponse("", StartUp.GetUSerDataAction)))
         .Start();
 
@@ -38,12 +38,4 @@ public class StartUp
     //            $"- <a herf='/Login'>Login</a></h3>";
     //    }
     //}
-
-    private static void LogoutAction(Request request, Response response)
-    {
-        request.Session.Clear();
-
-        response.Body = String.Empty;
-        response.Body += "<h3>Logged out Successfully!</h3>";
-    }
 }

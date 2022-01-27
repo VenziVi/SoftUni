@@ -47,5 +47,12 @@ namespace BasicWebServer.Demo.Controllers
 
             return Redirect("/Login");
         }
+
+        public Response Logout()
+        {
+            Request.Session.Clear();
+
+            return Html("<h3>Logged out Successfully!</h3>");
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using BasicWebServer.Demo.Controllers;
 using BasicWebServer.Server;
 using BasicWebServer.Server.Controllers;
-using BasicWebServer.Server.HTTP;
 
 public class StartUp
 {   
@@ -18,24 +17,9 @@ public class StartUp
             .MapGet<HomeController>("/Session", c => c.Session())
             .MapGet<UsersController>("/Login", c => c.Login())
             .MapPost<UsersController>("/Login", c => c.LoginUser())
-            .MapGet<UsersController>("/Logout", c => c.Logout()))
-            //.MapGet<HomeController>("/UserProfile", new HtmlResponse("", StartUp.GetUSerDataAction)))
+            .MapGet<UsersController>("/Logout", c => c.Logout())
+            .MapGet<UsersController>("/UserProfile", c => c.GetUserData()))
         .Start();
 
     }
-    //private static void GetUSerDataAction(Request request, Response response)
-    //{
-    //    if (request.Session.ContainsKey(Session.SessionUserKey))
-    //    {
-    //        response.Body = String.Empty;
-    //        response.Body += $"<h3>Currently logged-in user " + 
-    //            $"is with username '{Username}'</h3>";
-    //    }
-    //    else
-    //    {
-    //        response.Body = String.Empty;
-    //        response.Body += $"<h3>You should first log in " +
-    //            $"- <a herf='/Login'>Login</a></h3>";
-    //    }
-    //}
 }

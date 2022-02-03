@@ -27,7 +27,7 @@ namespace BasicWebServer.Demo.Controllers
             var name = Request.Form["Name"];
             var age = Request.Form["Age"];
 
-            var model = new FormViewModel
+            var model = new FormViewModel()
             {
                 Name = name,
                 Age = int.Parse(age)

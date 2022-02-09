@@ -1,22 +1,21 @@
 ﻿namespace SharedTrip
 {
+    using BasicWebServer.Server;
+    using BasicWebServer.Server.Routing;
     using System.Threading.Tasks;
-
-    using MyWebServer;
-    using MyWebServer.Controllers;
-
-    using Controllers;
-    using MyWebServer.Results.Views;
 
     public class Startup
     {
         public static async Task Main()
-            => await HttpServer
-                .WithRoutes(routes => routes
-                    .MapStaticFiles()
-                    .MapControllers())
-                .WithServices(services => services
-                    .Add<IViewEngine, CompilationViewEngine>())
-                .Start();
+        {
+            var server = new HttpServer(routes => routes
+               .MapControllers()
+               .MapStaticFiles());
+
+            //server.ServiceCollection
+            //    .Add<UserService>();
+
+            await server.Start();
+        }
     }
 }

@@ -13,17 +13,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">StartPoint</th>
-                    <td>EndPoint</td>
-                    <td>DepartureTime</td>
-                    <td>Seats</td>
-                    <td>
-                        <div class="button-holder">
-                            <a href="/Trips/Details?tripId=Id" class="btn btn-info text-uppercase">Info</a>
-                        </div>
-                    </td>
-                </tr>
+                {{foreach}}
+                {
+                    <tr>
+                        <th scope="row">{{StartPoint}}</th>
+                        <td>{{EndPoint}}</td>
+                        <td>{{DepartureTime}}</td>
+                        <td>{{Seats}}</td>
+                        <td>
+                            <div class="button-holder">
+                                <a href="/Trips/Details?tripId={{Id}}" class="btn btn-info text-uppercase">Info</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                
                 </tbody>
             </table>
         </div>

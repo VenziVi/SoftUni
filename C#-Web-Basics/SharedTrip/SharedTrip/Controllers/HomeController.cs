@@ -1,11 +1,18 @@
-﻿namespace SharedTrip.Controllers
+﻿using BasicWebServer.Server.Controllers;
+using BasicWebServer.Server.HTTP;
+
+namespace SharedTrip.Controllers
 {
-    using MyWebServer.Controllers;
-    using MyWebServer.Http;
 
     public class HomeController : Controller
     {
-        public HttpResponse Index()
+        public HomeController(Request request)
+            : base(request)
+        {
+
+        }
+
+        public Response Index()
         {
             return this.View();
         }

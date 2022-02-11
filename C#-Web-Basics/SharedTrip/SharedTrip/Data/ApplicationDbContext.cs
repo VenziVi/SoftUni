@@ -15,7 +15,6 @@
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(DatabaseConfiguration.ConnectionString);
-            //optionsBuilder.UseSqlServer(DatabaseConfiguration.ConnectionString, b => b.MigrationsAssembly("BasicWebServer.SharedTrip"));
         }
 
         public DbSet<User> Users { get; set; }

@@ -23,7 +23,6 @@ namespace SharedTrip.Models
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(20)]
         public string Password { get; set; }
 
         public ICollection<UserTrip> UserTrips { get; set; }

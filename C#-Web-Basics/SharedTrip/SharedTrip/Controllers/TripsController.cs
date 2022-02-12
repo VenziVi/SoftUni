@@ -2,6 +2,8 @@
 using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
 using SharedTrip.Contracts;
+using SharedTrip.Models;
+using SharedTrip.Models.TripsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +26,38 @@ namespace SharedTrip.Controllers
         [Authorize]
         public Response All()
         {
-            return View();
+            IEnumerable<AllTripsViewModel> trips = tripService.GetAllTrips();
+            return View(trips);
         }
 
         [Authorize]
         public Response Add()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public Response Add(AddViewModel model)
+        {
+            var (isValid, errors) = tripService.IsValid(model);
+
+            if (!isValid)
+            {
+                return View(errors, "/Error");
+            }
+
+            try
+            {
+                tripService.AddTrip(model);
+            }
+            catch (Exception)
+            {
+
+                return View(new List<ErrorViewModel>() { new ErrorViewModel("Unexpected error!") });
+            }
+
+            return Redirect("/Trips/All");
         }
 
         [Authorize]

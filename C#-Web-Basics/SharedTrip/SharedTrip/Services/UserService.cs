@@ -59,6 +59,13 @@ namespace SharedTrip.Services
 
         public void RegisterUser(RegisterViewModel model)
         {
+            var userExists = UserByUsername(model.Username) != null;
+
+            if (userExists)
+            {
+                throw new InvalidOperationException("Username allready exists!");
+            }
+
             User user = new User()
             {
                 Username = model.Username,
@@ -69,6 +76,31 @@ namespace SharedTrip.Services
 
             dbContext.Add(user);
             dbContext.SaveChanges();
+        }
+
+        private User UserByUsername(string username)
+        {
+            return dbContext.Set<User>().FirstOrDefault(u => u.Username == username);
+        }
+
+        public (string userId, bool userExists) UserExists(LoginViewModel model)
+        {
+            bool isExists = false;
+            string userId = string.Empty;
+
+            var user = UserByUsername(model.Username);
+
+            if (user != null)
+            {
+                isExists = user.Password == HashPassword(model.Password);
+            }
+
+            if (isExists)
+            {
+                userId = user.Id;
+            }
+
+            return (userId, isExists);
         }
 
         private string HashPassword(string password)

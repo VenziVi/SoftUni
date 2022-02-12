@@ -42,6 +42,10 @@ namespace SharedTrip.Controllers
             {
                 userService.RegisterUser(model);
             }
+            catch (InvalidOperationException iex)
+            {
+                return View(new List<ErrorViewModel>() { new ErrorViewModel(iex.Message) });
+            }
             catch (Exception)
             {
 
@@ -50,6 +54,32 @@ namespace SharedTrip.Controllers
 
 
             return Redirect("/Users/Login");
+        }
+
+        [HttpPost]
+        public Response Login(LoginViewModel model)
+        {
+            Request.Session.Clear();
+
+            (string userId, bool userExists) = userService.UserExists(model);
+
+            if (userExists)
+            {
+                SignIn(userId);
+                CookieCollection cookies = new CookieCollection();
+                cookies.Add(Session.SessionCookieName, Request.Session.Id);
+
+                return Redirect("/Trips/All");
+            }
+
+            return View("/Users/Login");
+        }
+
+        [Authorize]
+        public Response Logout()
+        {
+            SignOut();
+            return View("/Users/Login");
         }
     }
 }

@@ -12,5 +12,6 @@ namespace SharedTrip.Contracts
     {
         (bool isValid, IEnumerable<ErrorViewModel> errors) IsValid(RegisterViewModel model);
         void RegisterUser(RegisterViewModel model);
+        (string userId, bool userExists) UserExists(LoginViewModel model);
     }
 }

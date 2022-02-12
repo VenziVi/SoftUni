@@ -61,9 +61,10 @@ namespace SharedTrip.Controllers
         }
 
         [Authorize]
-        public Response Details()
+        public Response Details(string tripId)
         {
-            return View();
+            DetailsViewModel details = tripService.GetTripDetails(tripId);
+            return View(details);
         }
     }
 }

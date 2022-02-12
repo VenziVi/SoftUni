@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharedTrip.Services
 {
@@ -94,6 +92,23 @@ namespace SharedTrip.Services
                     DepartureTime = t.DepartureTime.ToString("dd.MM.yyyy HH:mm"),
                     Seats = t.Seats
                 });
+        }
+
+        public DetailsViewModel GetTripDetails(string tripId)
+        {
+            return context.Set<Trip>()
+                .Where(t => t.Id == tripId)
+                .Select(t => new DetailsViewModel()
+                {
+                    Id = t.Id,
+                    StartPoint = t.StartPoint,
+                    EndPoint = t.EndPoint,
+                    Description = t.Description,
+                    DepartureTime = t.DepartureTime.ToString("dd.MM.yyyy HH:mm"),
+                    Seats = t.Seats,
+                    ImagePath = t.ImagePath
+                })
+                .FirstOrDefault();
         }
     }
 }

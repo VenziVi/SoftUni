@@ -75,9 +75,13 @@ namespace SharedTrip.Controllers
             return View("/Users/Login");
         }
 
-        [Authorize]
         public Response Logout()
         {
+            if (!User.IsAuthenticated)
+            {
+                return Redirect("/Home");
+            }
+
             SignOut();
             return View("/Users/Login");
         }

@@ -23,16 +23,26 @@ namespace SharedTrip.Controllers
             tripService = _tripService;
         }
 
-        [Authorize]
+
         public Response All()
         {
+            if (!User.IsAuthenticated)
+            {
+                return Redirect("/Home");
+            }
+
             IEnumerable<AllTripsViewModel> trips = tripService.GetAllTrips();
             return View(trips);
         }
 
-        [Authorize]
+        
         public Response Add()
         {
+            if (!User.IsAuthenticated)
+            {
+                return Redirect("/Home");
+            }
+
             return View();
         }
 
@@ -40,6 +50,11 @@ namespace SharedTrip.Controllers
         [Authorize]
         public Response Add(AddViewModel model)
         {
+            if (!User.IsAuthenticated)
+            {
+                return Redirect("/Home");
+            }
+
             var (isValid, errors) = tripService.IsValid(model);
 
             if (!isValid)

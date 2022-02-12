@@ -14,5 +14,7 @@ namespace SharedTrip.Contracts
         void AddTrip(AddViewModel model);
         IEnumerable<AllTripsViewModel> GetAllTrips();
         DetailsViewModel GetTripDetails(string tripId);
+        void AddUSerToTrip(string tripId, string id);
+        bool IsAddedToTrip(string tripId, string id);
     }
 }

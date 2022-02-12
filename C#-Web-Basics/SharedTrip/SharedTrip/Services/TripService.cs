@@ -110,5 +110,34 @@ namespace SharedTrip.Services
                 })
                 .FirstOrDefault();
         }
+
+        public void AddUSerToTrip(string tripId, string id)
+        {
+            var user = context.Set<User>()
+                .FirstOrDefault(u => u.Id == id);
+            var trip = context.Set<Trip>()
+                .FirstOrDefault(t => t.Id == tripId);
+
+            if (user == null || trip == null)
+            {
+                throw new ArgumentException("User or trip not found!");
+            }
+
+            user.UserTrips.Add(new UserTrip()
+            {
+                TripId = tripId,
+                Trip = trip,
+                User = user,
+                UserId = id
+            });
+
+            context.SaveChanges();
+        }
+
+        public bool IsAddedToTrip(string tripId, string id)
+        {
+            return context.Set<UserTrip>()
+                .Any(t => t.TripId == tripId && t.UserId == id);
+        }
     }
 }

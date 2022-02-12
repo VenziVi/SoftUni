@@ -1,5 +1,7 @@
-﻿using BasicWebServer.Server.Controllers;
+﻿using BasicWebServer.Server.Attributes;
+using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
+using SharedTrip.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,31 @@ namespace SharedTrip.Controllers
 {
     public class TripsController : Controller
     {
-        public TripsController(Request request) 
+        public readonly ITripService tripService;
+        public TripsController(
+            Request request,
+            ITripService _tripService) 
             : base(request)
         {
+            tripService = _tripService;
+        }
+
+        [Authorize]
+        public Response All()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public Response Add()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public Response Details()
+        {
+            return View();
         }
     }
 }

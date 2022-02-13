@@ -31,10 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Models\" />
     <Folder Include="Views\" />
     <Folder Include="wwwroot\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

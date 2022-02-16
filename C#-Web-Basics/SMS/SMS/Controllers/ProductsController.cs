@@ -14,20 +14,18 @@ namespace SMS.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService productService;
-        private readonly IUserService userService;
 
         public ProductsController(Request request,
-            IProductService _productService,
-            IUserService _userService) 
+            IProductService _productService)
             : base(request)
         {
             productService = _productService;
-            userService = _userService;
         }
 
+        [Authorize]
+        public Response Create() => View(new { IsAuthenticated = true });
 
-        public Response Create() => View();
-
+        [Authorize]
         [HttpPost]
         public Response Create(CreateViewModel model)
         {
@@ -38,7 +36,7 @@ namespace SMS.Controllers
                 return View(Errors, "/Error");
             }
 
-            return Redirect("/Home/IndexLoggedin");
+            return Redirect("/");
         }
     }
 }

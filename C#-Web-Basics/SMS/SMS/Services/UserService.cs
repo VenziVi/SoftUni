@@ -105,5 +105,10 @@ namespace SMS.Services
                 return Convert.ToBase64String(sha256.ComputeHash(passwordArr));
             }
         }
+
+        public string GetUserName(string userId)
+        {
+            return context.Set<User>().FirstOrDefault(u => u.Id == userId).Username;
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace SMS.Controllers
             userService = _userService;   
         }
 
-        public Response Login() => View();
+        public Response Login() => View(new { IsAuthenticated = false });
 
         [HttpPost]
         public Response Login(LoginViewModel model)
@@ -35,13 +35,13 @@ namespace SMS.Controllers
                 CookieCollection cookies = new CookieCollection();
                 cookies.Add(Session.SessionCookieName, Request.Session.Id);
 
-                return Redirect("/Home/IndexLoggedin");
+                return Redirect("/");
             }
 
-            return Redirect("/Users/Login");
+            return View(new { IsAuthenticated = false}, "/Users/Login");
         }
 
-        public Response Register() => View();
+        public Response Register() => View(new { IsAuthenticated = false });
 
         [HttpPost]
         public Response Register(RegisterViewModel model)
@@ -71,7 +71,7 @@ namespace SMS.Controllers
             }
 
             SignOut();
-            return View("/Home/Index");
+            return View(new {IsAuthenticated = false }, "/Home/Index");
         }
     }
 }

@@ -9,5 +9,7 @@ namespace SMS.Contracts
         (bool isValid, IEnumerable<ErrorViewModel> errors) IsValid(RegisterViewModel model);
         void Register(RegisterViewModel model);
         (string userId, bool userExists) UserExists(LoginViewModel model);
+
+        string GetUserName(string userId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CarShop.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarShop.Data
 {
@@ -11,6 +12,12 @@ namespace CarShop.Data
                 optionsBuilder.UseSqlServer("Server=.;Database=CarShop;Integrated Security=true;");
             }
         }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<Issue> Issues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,6 +2,10 @@
 {
     using BasicWebServer.Server;
     using BasicWebServer.Server.Routing;
+    using CarShop.Contracts;
+    using CarShop.Data;
+    using CarShop.Data.Common;
+    using CarShop.Services;
     using System.Threading.Tasks;
 
     public class Startup
@@ -12,10 +16,13 @@
                .MapControllers()
                .MapStaticFiles());
 
-            /*
+            
             server.ServiceCollection
-                .Add<...>();
-            */
+                .Add<ApplicationDbContext>()
+                .Add<IRepository, Repository>()
+                .Add<IValidationService, ValidationService>()
+                .Add<IUserService, UserService>();
+            
             await server.Start();
         }
     }

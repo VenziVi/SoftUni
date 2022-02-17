@@ -20,10 +20,10 @@ namespace Git.Controllers
         {
             if (User.IsAuthenticated)
             {
-                return Redirect("/Repositories/All");
+                return View(new { IsAuthenticated = false }, "/Repositories/All");
             }
 
-            return View();
+            return View(new { IsAuthenticated = false });
         }
 
         [HttpPost]
@@ -41,21 +41,21 @@ namespace Git.Controllers
 
         public Response Login()
         {
-            if (User.IsAuthenticated)
-            {
-                return Redirect("/Repositories/All");
-            }
+            //if (User.IsAuthenticated)
+            //{
+            //    return Redirect("/Repositories/All");
+            //}
 
-            return View();
+            return View(new { IsAuthenticated = false});
         }
 
         [HttpPost]
         public Response Login(LoginViewModel model)
         {
-            if (User.IsAuthenticated)
-            {
-                return Redirect("/Repositories/All");
-            }
+            //if (User.IsAuthenticated)
+            //{
+            //    return Redirect("/Repositories/All");
+            //}
 
             string id = userService.IsLogged(model);
 
@@ -70,15 +70,14 @@ namespace Git.Controllers
             cookies.Add(Session.SessionCookieName,
                 Request.Session.Id);
 
-            return Redirect("/Repositories/All");
+            return View(new { IsAuthenticated = true }, "/Repositories/All");
         }
 
-        [Authorize]
         public Response Logout()
         {
             SignOut();
 
-            return Redirect("/");
+            return View(new { IsAuthenticated = false }, "/Home/Index");
         }
     }
 }

@@ -97,6 +97,7 @@ namespace BasicWebServer.Server.Responses
                 }
 
                 result.AppendLine(line);
+
             }
 
             return result.ToString();

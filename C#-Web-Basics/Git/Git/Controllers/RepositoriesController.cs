@@ -29,7 +29,10 @@ namespace Git.Controllers
                 ComitsCount = 5
             };
 
-            return View(m);
+            return View(new 
+            {
+                AllRepos = allRepos,
+            }, "/Repositories/All");
         }
 
         [Authorize]

@@ -23,21 +23,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{foreach}}
-                            {
                                 <tr class="table-light">
+                                {{foreach}}
+                                {
                                     <th scope="row">{{RepoName}}</th>
                                     <td>{{Owner}}</td>
                                     <td>{{Date}}</td>
                                     <td>{{ComitsCount}}</td>
-                                    {{if(User.IsAuthenticated)}}
-                                    {
-                                        <td>
-                                            <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
-                                        </td>
-                                    }
-                                 </tr>
-                            }
+                                    <td>
+                                        <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
+                                    </td>
+                                }
+                                </tr>
                         </tbody>
                     </table>
                 </div>

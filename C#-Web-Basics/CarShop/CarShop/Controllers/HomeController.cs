@@ -13,7 +13,12 @@ namespace CarShop.Controllers
 
         public Response Index()
         {
-            return this.View(new { IsAuthenticated = false });
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/Cars/All");
+            }
+
+            return View(new { IsAuthenticated = false });
         }
     }
 }

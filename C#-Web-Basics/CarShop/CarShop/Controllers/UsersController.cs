@@ -51,7 +51,7 @@ namespace CarShop.Controllers
             cookies.Add(Session.SessionCookieName,
                 Request.Session.Id);
 
-            return View(new { IsAuthenticated = true }, "/Cars/All");
+            return Redirect("/Cars/All");
         }
 
         [Authorize]

@@ -5,7 +5,7 @@ namespace CarShop.ViewModels
     public class AddViewModel
     {
         [Required]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = Constraints.ErrorMessiges.LengthErrorMessige)]
+        [StringLength(20, MinimumLength = 5)]
         public string Model { get; set; }
 
         [Required]

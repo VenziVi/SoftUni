@@ -21,7 +21,9 @@
                 .Add<ApplicationDbContext>()
                 .Add<IRepository, Repository>()
                 .Add<IValidationService, ValidationService>()
-                .Add<IUserService, UserService>();
+                .Add<IUserService, UserService>()
+                .Add<ICarService, CarService>()
+                .Add<IIssueService, IssueService>();
             
             await server.Start();
         }

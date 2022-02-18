@@ -90,5 +90,22 @@ namespace CarShop.Services
                 return Convert.ToBase64String(sha256.ComputeHash(passworArray));
             }
         }
+
+        public bool IsUserMechanic(string id)
+        {
+            bool isMechanic = false;
+
+            var user = repo
+                .All<User>()
+                .Where(u => u.Id == id)
+                .FirstOrDefault();
+
+            if (user.IsMechanic)
+            {
+                isMechanic = true;
+            }
+
+            return isMechanic;
+        }
     }
 }

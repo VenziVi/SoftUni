@@ -11,5 +11,6 @@ namespace CarShop.Contracts
     {
         bool Register(RegisterViewModel model);
         string Login(LoginViewModel model);
+        bool IsUserMechanic(string id);
     }
 }

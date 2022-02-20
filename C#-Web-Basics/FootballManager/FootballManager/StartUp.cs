@@ -2,6 +2,10 @@
 {
     using BasicWebServer.Server;
     using BasicWebServer.Server.Routing;
+    using FootballManager.Contracts;
+    using FootballManager.Data;
+    using FootballManager.Data.Common;
+    using FootballManager.Services;
     using System.Threading.Tasks;
 
     public class Startup
@@ -12,10 +16,14 @@
                .MapControllers()
                .MapStaticFiles());
 
-            /*
+            
             server.ServiceCollection
-                .Add<...> ();
-            */
+                .Add<FootballManagerDbContext>()
+                .Add<IRepository, Repository>()
+                .Add<IValidationService, ValidationService>()
+                .Add<IUserService, UserService>()
+                .Add<IPlayerService, PlayerService>();
+            
             await server.Start();
         }
     }

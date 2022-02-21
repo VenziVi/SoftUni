@@ -9,8 +9,9 @@ namespace CarShop.Contracts
 {
     public interface IIssueService
     {
-        bool addIssue(AddIssueViewModel model, string carId);
+        bool addIssue(AddIssueViewModel model, string CarId);
         IEnumerable<IssueViewModel> GetIssues(string carId);
         CarWithIssuesViewModel GetCarWithissues(string carId);
+        void DeleteIssue(string carId, string issueId);
     }
 }

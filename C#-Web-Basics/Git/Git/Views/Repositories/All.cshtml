@@ -10,7 +10,6 @@
                 <div class="d-flex justify-content-center">
                     <a class="btn btn-block btn-primary text-white mb-3" href="/Repositories/Create">Create a repository</a>
                 </div>
-
                 <div class="component">
                     <table class="table table-hover">
                         <thead>
@@ -23,18 +22,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr class="table-light">
+                            <tr class="table-light">
                                 {{foreach}}
                                 {
-                                    <th scope="row">{{RepoName}}</th>
-                                    <td>{{Owner}}</td>
-                                    <td>{{Date}}</td>
-                                    <td>{{ComitsCount}}</td>
-                                    <td>
-                                        <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
-                                    </td>
+                                <th scope="row">{{RepoName}}</th>
+                                <td>{{Owner}}</td>
+                                <td>{{Date}}</td>
+                                <td>{{ComitsCount}}</td>
+                                <td>
+                                    <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
+                                </td>
                                 }
-                                </tr>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

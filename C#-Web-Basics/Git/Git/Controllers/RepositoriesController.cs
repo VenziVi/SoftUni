@@ -20,19 +20,10 @@ namespace Git.Controllers
         {
             IEnumerable<AllRepoViewModel> allRepos = repoServise.GetRepos();
 
-            AllRepoViewModel m = new AllRepoViewModel()
-            {
-                Id = "mmmmmmmm",
-                RepoName = "bestRep",
-                Date = "12.07.2022",
-                Owner = "Venzi",
-                ComitsCount = 5
-            };
-
             return View(new 
             {
-                AllRepos = allRepos,
-            }, "/Repositories/All");
+                AllRepos = allRepos
+            });
         }
 
         [Authorize]

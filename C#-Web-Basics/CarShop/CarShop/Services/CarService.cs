@@ -67,7 +67,7 @@ namespace CarShop.Services
                 .Where(c => c.Issues.Any(c => c.IsFixed == false))
                 .Select(c => new AllCarsViewModel()
                 {
-                    Id = c.Id,
+                    CarId = c.Id,
                     Model = c.Model,
                     Year = c.Year.ToString(),
                     PictureUrl = c.PictureUrl,
@@ -85,7 +85,7 @@ namespace CarShop.Services
                 .Where(c => c.OwnerId == id)
                 .Select(c => new AllCarsViewModel()
                 {
-                    Id = c.Id,
+                    CarId = c.Id,
                     Model = c.Model,
                     Year = c.Year.ToString(),
                     PictureUrl= c.PictureUrl,

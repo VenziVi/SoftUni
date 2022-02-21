@@ -45,10 +45,25 @@ namespace CarShop.Services
             return isAdded;
         }
 
-        public CarWithIssuesViewModel? GetCarWithissues(string carId)
+        public void DeleteIssue(string carId, string issueId)
+        {
+            var issue = repo.All<Issue>().FirstOrDefault(i => i.Id == issueId);
+            var car = repo.All<Car>().FirstOrDefault(c => c.Id == carId);
+
+            try
+            {
+                repo.Delete(issue);
+                repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public CarWithIssuesViewModel? GetCarWithissues(string CarId)
         {
             return repo.All<Car>()
-                .Where(c => c.Id == carId)
+                .Where(c => c.Id == CarId)
                 .Select(c => new CarWithIssuesViewModel()
                 {
                     CarId = c.Id,

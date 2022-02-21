@@ -2,7 +2,7 @@
 {
     public class AllCarsViewModel
     {
-        public string Id { get; set; }
+        public string CarId { get; set; }
 
         public string Model { get; set; }
 

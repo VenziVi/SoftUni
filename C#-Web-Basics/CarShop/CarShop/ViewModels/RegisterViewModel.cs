@@ -1,5 +1,4 @@
-﻿using CarShop.Constraints;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CarShop.ViewModels
 {

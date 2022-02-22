@@ -2,11 +2,6 @@
 using CarShop.Data.Common;
 using CarShop.Data.Models;
 using CarShop.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarShop.Services
 {
@@ -45,10 +40,9 @@ namespace CarShop.Services
             return isAdded;
         }
 
-        public void DeleteIssue(string carId, string issueId)
+        public void DeleteIssue(string issueId)
         {
             var issue = repo.All<Issue>().FirstOrDefault(i => i.Id == issueId);
-            var car = repo.All<Car>().FirstOrDefault(c => c.Id == carId);
 
             try
             {
@@ -58,6 +52,15 @@ namespace CarShop.Services
             catch (Exception)
             {
             }
+        }
+
+        public void Fix(string issueId)
+        {
+            var issue = repo.All<Issue>().FirstOrDefault(i => i.Id == issueId);
+
+            issue.IsFixed = true;
+
+            repo.SaveChanges();
         }
 
         public CarWithIssuesViewModel? GetCarWithissues(string CarId)

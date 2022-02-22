@@ -1,9 +1,4 @@
 ﻿using CarShop.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarShop.Contracts
 {
@@ -12,6 +7,7 @@ namespace CarShop.Contracts
         bool addIssue(AddIssueViewModel model, string CarId);
         IEnumerable<IssueViewModel> GetIssues(string carId);
         CarWithIssuesViewModel GetCarWithissues(string carId);
-        void DeleteIssue(string carId, string issueId);
+        void DeleteIssue(string issueId);
+        void Fix(string issueId);
     }
 }

@@ -11,6 +11,7 @@ namespace CarShop.Controllers
         private readonly IIssueService issueService;
         private readonly ICarService carService;
         private readonly IUserService userService;
+        private static string id;
 
         public IssuesController(
             Request request,
@@ -25,21 +26,25 @@ namespace CarShop.Controllers
         }
 
         [Authorize]
-        public Response CarIssues(string CarId)
+        public Response CarIssues(string carId)
         {
-            CarIssuesViewModel car = carService.GetCar(CarId);
-            IEnumerable<IssueViewModel> issues = issueService.GetIssues(CarId);
+            if (carId == null)
+            {
+                carId = id;
+            }
 
-            CarWithIssuesViewModel carIssues = issueService.GetCarWithissues(CarId);
+            CarIssuesViewModel car = carService.GetCar(carId);
+            IEnumerable<IssueViewModel> issues = issueService.GetIssues(carId);
+
+            CarWithIssuesViewModel carIssues = issueService.GetCarWithissues(carId);
 
             bool isMechanic = userService.IsUserMechanic(User.Id);
 
             return View(new 
             {
-                CarId = CarId,
+                CarId = carId,
                 Model = car.Model,
                 Year = car.Year,
-                //CarIssues = carIssues,
                 Issues = issues,
                 IsAuthenticated = true,
                 isMechanic = isMechanic,
@@ -47,16 +52,18 @@ namespace CarShop.Controllers
         }
 
         [Authorize]
-        public Response Add(string CarId)
+        public Response Add(string carId)
         {
-            return View(new { IsAuthenticated = true, CarId = CarId });
+            return View(new { IsAuthenticated = true, CarId = carId });
         }
 
         [Authorize]
         [HttpPost]
-        public Response Add(AddIssueViewModel model, string CarId)
+        public Response Add(AddIssueViewModel model, string carId)
         {
-            bool isAdded = issueService.addIssue(model, CarId);
+            bool isAdded = issueService.addIssue(model, carId);
+
+            id = carId;
 
             if (isAdded)
             {
@@ -66,9 +73,17 @@ namespace CarShop.Controllers
             return Redirect("/Issues/Add");
         }
 
-        public Response Delete(string CarId, string issueId)
+        public Response Delete(string carId, string issueId)
         {
-            issueService.DeleteIssue(CarId, issueId);
+            id = carId;
+            issueService.DeleteIssue(issueId);
+            return Redirect("/Issues/CarIssues");
+        }
+
+        public Response Fix(string carId, string issueId)
+        {
+            id = carId;
+            issueService.Fix(issueId);
             return Redirect("/Issues/CarIssues");
         }
     }

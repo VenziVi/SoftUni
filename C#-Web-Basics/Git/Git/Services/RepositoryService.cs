@@ -32,7 +32,7 @@ namespace Git.Services
 
         public IEnumerable<AllRepoViewModel> GetRepos()
         {
-            var repos = repo.All<Repository>()
+            return repo.All<Repository>()
                   .Where(r => r.IsPublic == true)
                   .Select(r => new AllRepoViewModel()
                   {
@@ -41,9 +41,7 @@ namespace Git.Services
                       Date = r.CreatedOn.ToString("dd.MM.yyyy"),
                       Owner = r.Owner.Username,
                       ComitsCount = r.Commits.Count()
-                  });
-
-            return repos;
+                  }).ToList();
         }
 
         public bool IsCreated(CreateRepoViewModel model, string id)

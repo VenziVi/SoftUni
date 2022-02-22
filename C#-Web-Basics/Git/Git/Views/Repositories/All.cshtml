@@ -6,13 +6,15 @@
                     <h2 id="tables">Public</h2>
                     <p>Repositories</p>
                 </div>
-
+                {{if(IsAuthenticated)}}
+                {
                 <div class="d-flex justify-content-center">
                     <a class="btn btn-block btn-primary text-white mb-3" href="/Repositories/Create">Create a repository</a>
                 </div>
+                }
                 <div class="component">
                     <table class="table table-hover">
-                        <thead>
+                        <thead class="table-active">
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Owner</th>
@@ -21,10 +23,10 @@
                                 <th scope="col">Commit</th>
                             </tr>
                         </thead>
+                        {{foreach}}
+                        {
                         <tbody>
                             <tr class="table-light">
-                                {{foreach}}
-                                {
                                 <th scope="row">{{RepoName}}</th>
                                 <td>{{Owner}}</td>
                                 <td>{{Date}}</td>
@@ -32,9 +34,9 @@
                                 <td>
                                     <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
                                 </td>
-                                }
                             </tr>
                         </tbody>
+                        }
                     </table>
                 </div>
             </div>

@@ -20,9 +20,19 @@ namespace Git.Controllers
         {
             IEnumerable<AllRepoViewModel> allRepos = repoServise.GetRepos();
 
+            if (User.IsAuthenticated)
+            {
+                return View(new
+                {
+                    IsAuthenticated = true,
+                    allRepos
+                });
+            }
+
             return View(new 
             {
-                AllRepos = allRepos
+                IsAuthenticated = false,
+                allRepos
             });
         }
 

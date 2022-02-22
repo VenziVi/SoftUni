@@ -41,10 +41,10 @@ namespace Git.Controllers
 
         public Response Login()
         {
-            //if (User.IsAuthenticated)
-            //{
-            //    return Redirect("/Repositories/All");
-            //}
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/Repositories/All");
+            }
 
             return View(new { IsAuthenticated = false});
         }

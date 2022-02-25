@@ -54,7 +54,7 @@
     <td><a href="https://softuni.bg/certificates/details/119013/6458c29d">Link</a></td>
   </tr>
   <tr>
-    <td>Entity C# Web Basics</td>
+    <td>C# Web Basics</td>
     <td><a href="https://softuni.bg/certificates/details/126280/4c628390">Link</a></td>
   </tr>
 </tbody>

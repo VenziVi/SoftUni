@@ -12,7 +12,6 @@ namespace _03.ShortestPath
         static void Main(string[] args)
         {
             var n = int.Parse(Console.ReadLine());
-
             var e = int.Parse(Console.ReadLine());
 
             graph = new List<int>[n + 1];

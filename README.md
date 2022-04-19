@@ -57,6 +57,10 @@
     <td>C# Web Basics</td>
     <td><a href="https://softuni.bg/certificates/details/126280/4c628390">Link</a></td>
   </tr>
+  <tr>
+    <td>ASP.NET Core</td>
+    <td><a href="https://softuni.bg/certificates/details/132671/073277bb">Link</a></td>
+  </tr>
 </tbody>
 </table>
 
